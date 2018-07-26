@@ -1,0 +1,10 @@
+- Setup
+- Syntax and Keywords
+- Program Structure
+- Data Structures
+- Code Organisation
+- Standard Library
+- Concurrency
+- Tooling
+- Documentation
+- Testing
