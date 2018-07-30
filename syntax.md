@@ -4,9 +4,43 @@
 
 ## `for` Loop
 
+The C-style `for` loop without parentheses:
+
+    for initialization; condition; post {
+        // zero or more statements
+    }
+
+- initialization: simple statement (variable declaration, function call)
+- condition: expression returning a boolean value
+- post: statement to be executed after every iteration
+
+If initialization and post statement are omitted, it resembles a traditional
+`while` loop:
+
+    for condition {
+        // zero or more statements
+    }
+
+The condition can be left away to create an infinite loop:
+
+    for {
+        // zero or more statements
+        // break or return to end the loop
+    }
+
+### `for`/`range` loop
+
+Looping over a slice, the `range` keyword produces a pair of variables, index
+and value:
+
+    for i, v := range s {
+        // s[i] == v
+    }
+
 ## Increment/Decrement
 
-The increment and decrement operators are short forms of adding/subtracting one:
+The increment and decrement operators are short forms of adding/subtracting
+one:
 
     a := 0
 
@@ -61,6 +95,13 @@ If both boundaries are omitted, the colon can be omitted, too:
 
 ## Blank Identifier `_`
 
+If a returned variable is not of interest, and since unused variables cause a
+compilation error, it can be discarded using the blank identifier `_`:
+
+    err, val := foo.Bar()
+    _, val := foo.Bar()
+    err, _ := foo.Bar()
+
 ## String Concatenation
 
 The `+` operator concatenates two strings:
@@ -75,3 +116,44 @@ String concatenation can be combined with an assignment operator:
     a += "bar" # "foobar"
 
 ## Variable Declaration
+
+There are four ways of declaring a variable:
+
+1. `s := ""`
+    - shortest and most used form
+    - only within functions
+    - to be used when the initial value is important
+2. `var s string`
+    - commonly used
+    - relies on default initialization
+    - also allowed outside of functions
+    - to be used when the initial value is _not_ important
+3. var s = ""
+    - used for declaration of multiple variables
+4. var s string = ""
+    - redundant type/value declaration
+    - useful if default value of a type an initialization value differ
+
+Option 1 and 2 are generally prefered.
+
+## Package Declaration
+
+Declare the package name on the top of a file:
+
+    package main
+
+## Package Imports
+
+Import a single package:
+
+    import "fmt"
+
+Import multiple packages:
+
+    import (
+        "fmt"
+        "os"
+        "strings"
+    )
+
+## Functions

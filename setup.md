@@ -33,3 +33,18 @@ Make sure to have the following folders in `$GOPATH`:
 Add Go binaries to the PATH variable:
 
     export PATH="$PATH:$GOPATH/bin"
+
+## `vim-go`
+
+Configure `.vimrc` for `vim-plug`:
+
+    call plug#begin('~/.vim/plugged')
+    Plug 'fatih/vim-go'
+    call plug#end()
+
+Run `:PlugInstall` in vim after re-opening with new `.vimrc`.
+
+Suggested configuration in `.vimrc` (format upon saving using `goimports`):
+
+    let g:go_fmt_autosave = 1
+    let g:go_fmt_command = "goimports"
