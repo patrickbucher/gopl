@@ -37,6 +37,12 @@ and value:
         // s[i] == v
     }
 
+Looping over a map, `range` returns a key-value pair:
+
+   for k, v := range m {
+        // m[k] == v
+   }
+
 ## Increment/Decrement
 
 The increment and decrement operators are short forms of adding/subtracting
@@ -157,3 +163,31 @@ Import multiple packages:
     )
 
 ## Functions
+
+## `make`
+
+The `make` builtin function is used to build data structures, such as a `map`.
+
+## Maps
+
+A Map stores key-value pairs. The keys must be comparable (`==` operator).
+
+An empty `map` (`string` keys and `int` values) is created using the `make`
+builtin function:
+
+    m := make(map[string]int)
+
+Entries can be added/changed by assignment:
+
+    m["age"] = 31
+
+Values can be accessed by its key:
+
+    age := map["age"] 
+
+Trying to access non-existent entries returns the zero value of the value type:
+
+    weight := map["weight"] // weight == 0
+
+## `if` Statement
+

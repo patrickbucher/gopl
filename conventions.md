@@ -27,3 +27,32 @@ The comment preceding the `main` package describes the program as a whole:
 
     // Echo prints its command-line arguments.
     package main
+
+## Verbs for Formatted Output
+
+The functions in the `fmt` package with a `f` at the end of their names support
+formatted output using _verbs_:
+
+- integers
+    - `%d`: decimal integer, `10`
+    - `%x`: hexa-decimal integer, `af9832`
+    - `%o`: octal integer, `245243`
+    - `%b`: binary integer, `10011010110`
+- floating point numbers
+    - `%f`: single precision float, `3.333333`
+    - `%g`: double precision float, `3.3333333333333335`
+    - `%e`: exponential representation, `3.333333e+00` (`3.333333 * 10^0`)
+- boolean
+    - `%t`: boolean, `true` or `false`
+- text
+    - `%c`: rune (character), `ç`
+    - `%s`: string, `élément`
+    - `%q`: quoted string, `"c'est quoi, ça?"`
+- miscellaneous
+    - `%v`: value of an expression
+        - `fmt.Println("%v", fmt.Println) // 0x47c070`
+        - `fmt.Println("%v", 10/3.0) // 3.3333333333333335`
+    - `%T`: type of an expression
+        - `fmt.Println("%v", fmt.Println) // func(...interface {}) (int, error)`
+        - `fmt.Println("%v", 10/3.0) // float64`
+    - `%%`: literal `%`
