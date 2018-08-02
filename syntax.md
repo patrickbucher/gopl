@@ -70,6 +70,16 @@ There is only a suffix but no prefix form:
     ++i # illegal!
     --i # illegal!
 
+## `len` Function
+
+Return the length of a slice or map:
+
+    s := []string{"foo", "bar", "baz"}
+    len(s) // 3
+
+    m := map[string]int{"a": 1, "b", 2, "c", 3}
+    len(m) // 3
+
 ## Slicing
 
 Access an individual item `i` in a slice `s`:
@@ -189,5 +199,26 @@ Trying to access non-existent entries returns the zero value of the value type:
 
     weight := map["weight"] // weight == 0
 
+Maps can created using a literal:
+
+    m := map[string]int{"a": 1, "b": 2, "c": 3}
+
 ## `if` Statement
 
+## `continue` Statement
+
+Jump to the next iteration of a loop:
+
+    for i := 1; i < 10; i++ {
+        if i % 2 == 0 {
+            continue
+        }
+        fmt.Println(i)
+    }
+
+## Casting
+
+Cast a byte slice to a string:
+
+    s := string([]byte{65, 66, 67})
+    fmt.Println(s) // ABC

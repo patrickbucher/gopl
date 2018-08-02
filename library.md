@@ -4,9 +4,7 @@
 
 ### `bufio.Scanner`
 
-    type Scanner struct {
-        // Has unexported fields
-    }
+    type Scanner struct { }
         Scanner provides a convenient interface for reading data such as a file
         of newline-delimited lines of text. Successive calls to the Scan method
         will step through the 'tokens' of a file, skipping the bytes between
@@ -76,6 +74,22 @@ Example
 
     fmt.Printf("%d / %d = %f", 10, 3, 10/3.0) // 10 / 3 = 3.333333
 
+### `fmt.Fprintf`
+
+    TODO
+
+## `io`
+
+### `io/ioutil`
+
+#### `io/ioutil.ReadFile`
+
+    func ReadFile(filename string) ([]byte, error)
+        ReadFile reads the file named by filename and returns the contents. A
+        successful call returns err == nil, not err == EOF. Because ReadFile
+        reads the whole file, it does not treat an EOF from Read as an error to
+        be reported.
+
 ## `os`
 
 ### `os.Args`
@@ -85,6 +99,41 @@ Example
 
     for i, a := range os.Args[1:] {
         fmt.Printf("Argument %d is: %s\n", i, a)
+    }
+
+### `os.Open`
+
+    func Open(name string) (*File, error)
+        Open opens the named file for reading. If successful, methods on the
+        returned file can be used for reading; the associated file descriptor
+        has mode O_RDONLY. If there is an error, it will be of type *PathError.
+
+Example:
+
+    f, err := os.Open('foo.txt')
+    if err != nil {
+        // read from f
+        f.Close()
+    }
+
+
+### `os.File`
+
+    type File struct { }
+        File represents an open file descriptor.
+
+#### `os.File.Close`
+
+    func (f *File) Close() error
+        Close closes the File, rendering it unusable for I/O. It returns an
+        error, if any.
+
+Example:
+
+    f, err := os.Open('foo.txt')
+    if err != nil {
+        // read from f
+        f.Close()
     }
 
 ### `os.Stdin`, `os.Stdout` and `os.Stderr`

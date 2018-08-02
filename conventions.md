@@ -45,14 +45,20 @@ formatted output using _verbs_:
 - boolean
     - `%t`: boolean, `true` or `false`
 - text
-    - `%c`: rune (character), `ç`
+    - `%c`: rune (unicode code point), `ç`
     - `%s`: string, `élément`
-    - `%q`: quoted string, `"c'est quoi, ça?"`
+    - `%q`: quoted string (`"c'est quoi, ça?"`) or quoted rune (`'ç'`)
 - miscellaneous
-    - `%v`: value of an expression
+    - `%v`: value of an expression in natural format
         - `fmt.Println("%v", fmt.Println) // 0x47c070`
         - `fmt.Println("%v", 10/3.0) // 3.3333333333333335`
     - `%T`: type of an expression
         - `fmt.Println("%v", fmt.Println) // func(...interface {}) (int, error)`
         - `fmt.Println("%v", 10/3.0) // float64`
     - `%%`: literal `%`
+
+## Escape Sequences
+
+- `\n`: new line
+- `\t`: tab
+- `\\`: backspace

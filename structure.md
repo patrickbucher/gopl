@@ -9,3 +9,5 @@
     - `var`
     - `const`
     - `type`
+
+Functions may be declared in any order.
