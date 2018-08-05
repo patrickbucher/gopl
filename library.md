@@ -76,9 +76,204 @@ Example
 
 ### `fmt.Fprintf`
 
-    TODO
+    func Fprintf(w io.Writer, format string, a ...interface{} (n int, err error)
+        Fprintf formats according to a format specifier and writes to w. It
+        returns the number of bytes written and any write error encountered.
+
+Example:
+
+    fmt.Fprintf(os.Stderr, "%v (%T)\n", err, err)
+
+## `image`
+
+### `image.NewPaletted`
+
+    func NewPaletted(r Rectangle, p color.Palette) *Paletted
+        NewPaletted returns a new Paletted image with the given width, height
+        and palette.
+
+Example:
+
+    rectangle := image.Rect(0, 0, 8, 8)
+    palette := []color.Color{color.White, color.Black}
+    image := image.NewPaletted(rectangle, palette)
+
+### `image.Paletted`
+
+    type Paletted struct {
+        // Pix holds the image's pixels, as palette indices. [...]
+        Pix []uint8
+        
+        // Stride is the Pix stride (in bytes) between vertically adjacent
+        // pixels.
+        Stride int
+
+        // Rect is the image's bounds.
+        Rect Rectangle
+
+        // Palette is the image's palette.
+        Palette color.Palette
+    }
+        Paletted is an in-memory image of uint8 indices into a given palette.
+
+#### `image.Paletted.SetColorIndex`
+
+    func (p *Paletted) SetColorIndex(x, y int, index uint8)
+        Sets the color of the Point(x,y) to the color at the given index.
+
+Example:
+
+    rectangle := image.Rect(0, 0, 8, 8)
+    palette := []color.Color{color.White, color.Black}
+    img := image.NewPaletted(rect, palette)
+    img.SetColorIndex(3, 7, 1) // set the color at (3,7) to color.Black
+
+### `image.Rectangle`
+
+    type Rectangle struct {
+        Min, Max Point
+    }
+        A Rectangle contains the points with Min.X <= X < Max.X, Min.Y <= Y <
+        Max.Y. It is well-formed if Min.X <= Max.X and likewise for Y. Points
+        are always well-formed A rectangle's methods always return well-formed
+        outputs for well-formed inputs.
+
+        A Rectangle is also an Image whose bounds are the rectangle itself. At
+        returns color.Opaque for points in the rectangle and color.Transparent
+        otherwise.
+
+### `image.Rect`
+
+    func Rect(x0, y0, x1, y1 int) Rectangle
+        Rect is shorthand for Rectangle{Pt(x0, y0), Pt(x1, y1)}. The returnes
+        rectangle has minimum and maximum coordinates swapped if necessary so
+        that it is well-formed.
+
+Example:
+
+    r := image.Rect(0, 0, 128, 128) // (0,0)-(128,128)
+
+### `image/color`
+
+#### `image/color.Color`
+
+    type Color interface { }
+
+##### `image/color.White`, `image/color.Black` etc.
+
+Standard colors.
+
+##### `image/color.Color.RGBA`
+
+    func RGBA() (r, g, b, a uint32)
+        RGBA returns the alpha-premultiplied red, green, blue and alpha values
+        for the color. Each value ranges within [0, 0xffff], but is represented
+        by a uint32 so that multiplying by a blend factor up to 0xffff will not
+        overflow.
+
+        An alpha-premultiplied color component c has been scaled by alpha (a),
+        so has valid values 0 <= c <= a.
+
+Example:
+
+    var (
+        red   = color.RGBA{0xff, 0, 0, 0xff}
+        green = color.RGBA{0, 0xff, 0, 0xff}
+        blue  = color.RGBA{0, 0xff, 0, 0xff}
+    )
+
+#### `image/color.Palette`
+
+    type Palette []Color
+        Palette is a palette of colors.
+
+### `image/gif`
+
+#### `image/gif.GIF`
+
+    type GIF struct {
+        // The successive images.
+        Image           []*image.Paletted   
+
+        // The successive delay times, one per frame, in 100ths of a second.
+        Delay           []int               
+
+        // The loop count.
+        LoopCount       int
+
+        // Disposal is the successive disposal methods, one per frame. [...]
+        Disposal        []byte
+
+        // Config is the global color table (palette), width and height. [...]
+        Config          image.Config
+
+        // BackgroundIndex is the background index in the global color table,
+        // for use with the DisposalBackground disposal method.
+        BackgroundIndex byte
+    }
+        GIF represents the possibly multiple images stored in a GIF file.
+
+Example: A 2x2 square with a black pixel switching from top-left to bottom-right.
+
+	animation := gif.GIF{LoopCount: 2}
+	rectangle := image.Rect(0, 0, 2, 2)
+	palette := []color.Color{color.White, color.Black}
+
+	// first image:
+	// B W
+	// W W
+	image1 := image.NewPaletted(rectangle, palette)
+	image1.SetColorIndex(0, 0, 1)
+	image1.SetColorIndex(0, 1, 0)
+	image1.SetColorIndex(1, 0, 0)
+	image1.SetColorIndex(1, 1, 0)
+	animation.Delay = append(animation.Delay, 50)
+	animation.Image = append(animation.Image, image1)
+
+	// second image:
+	// W W
+	// W B
+	image2 := image.NewPaletted(rectangle, palette)
+	image2.SetColorIndex(0, 0, 0)
+	image2.SetColorIndex(0, 1, 0)
+	image2.SetColorIndex(1, 0, 0)
+	image2.SetColorIndex(1, 1, 1)
+	animation.Delay = append(animation.Delay, 50)
+	animation.Image = append(animation.Image, image2)
+
+	gif.EncodeAll(os.Stdout, &animation)
+
+### `image.Config`
+
+    type Config struct {
+        ColorModel      color.Model
+        Width, Height   int
+    }
+        Config holds an image's color model and dimensions.
+
+#### `image/gif.EncodeAll`
+
+    func EncodeAll(w io.Writer, g *GIF) error
+        EncodeAll writes the images in g to w in GIF format with the given loop
+        count and delay between frames.
 
 ## `io`
+
+### `io.Writer`
+
+    type Writer interface {
+        Write(p []byte) (n int, err error)
+    }
+        Writer ist the interface that wraps the basic Write method.
+
+#### `io.Writer.Write`
+
+    func Write(p []byte) (n int, err error)
+        Write writes len(p) bytes from p to the underlying data stream. It
+        returns the number of bytes written from p (0 <= n <= len(p)) and any
+        error encountered that caused the write to stop early. Write must
+        return a non-nil error if it returns n < len(p). Write must not modify
+        the slice data, even temporarily.
 
 ### `io/ioutil`
 
@@ -159,6 +354,31 @@ Example:
 
     fmt.Fprintln(os.Stdout, "this is a message")
     fmt.Fprintln(os.Stderr, "this is an error")
+
+## `math`
+
+### `math.Pi`
+
+    Pi  = 3.14159265358979323846264338327950288419716939937510582097494459
+
+Definition: https://oeis.org/A000796
+
+### `math.Sin`
+
+    func Sin(x float64) float64
+        Sin returns the sine of the radian argument x.
+
+Example:
+
+    math.Sin(90) // 0.893996663600558
+
+### `math/rand`
+
+### `math/rand.Float64`
+
+    func Flaot64() float64
+        Float 64 returns, as a float64, a pseudo-random number in [0.0,1.0)
+        from the default Source.
 
 ## `strings`
 

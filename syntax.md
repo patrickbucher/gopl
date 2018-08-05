@@ -222,3 +222,44 @@ Cast a byte slice to a string:
 
     s := string([]byte{65, 66, 67})
     fmt.Println(s) // ABC
+
+
+## Constants
+
+The `const` keyword defined a constant:
+
+    const maxIndex = 255
+
+Multiple constants can be combined to one declaration:
+
+    const (
+        firstIndex = 0
+        lastIndex  = 255
+    )
+
+Constant declarations can appear at the package or function level.
+
+## The `append` function
+
+Add to a slice:
+
+    s := []int{0, 1, 2}
+    s = append(s, 2) // s == []int{0, 1, 2, 3}
+
+## Composite Literals
+
+### Slice
+
+    fib := []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89}
+
+### Map
+
+    pop := map[string]int{"Switzerland": 8, "Germany": 8, "Russia": 150}
+
+### Struct
+
+    type country struct {
+        name       string
+        population int
+    }
+    switzerland := country{name: "Switzerland", population: 8}
