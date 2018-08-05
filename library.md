@@ -259,6 +259,30 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
 
 ## `io`
 
+### `io.Copy`
+
+    func Copy(dst Writer, src Reader) (written int64, err error)
+        Copy copies from src to dst until either EOF is reached on src or an
+        error occurs. It returns the number of bytes copied and the first error
+        encountered while copying, if any.
+
+        A successful Copy returns err == nil, not err == EOF. Because Copy is
+        defined to read from src until EOF, it does not treat an EOF from Read
+        as an error to be reported.
+
+        If src implements the WriterTo interface, the copy is implemented by
+        calling src.WriteTo(dst). Otherwise, if dst implements the ReaderFrom
+        interface, the copy is implemented by calling dst.ReadFrom(src).
+
+### `io.ReadCloser`
+
+    type ReadCloser interface {
+        Reader
+        Closer
+    }
+        ReadCloser is the interface that groups the basic Read and Close
+        methods.
+
 ### `io.Writer`
 
     type Writer interface {
@@ -276,6 +300,14 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
         the slice data, even temporarily.
 
 ### `io/ioutil`
+
+#### `io/ioutil.ReadAll`
+
+    func ReadAll(r io.Reader) ([]byte, error)
+        ReadAll reads from r until an error or EOF and returns the data it
+        read. A successful call returns err == nil, not err == EOF. Because
+        ReadAll is defined to read from src until EOF, it does not treat an EOF
+        from Read as an error to be reported.
 
 #### `io/ioutil.ReadFile`
 
@@ -295,6 +327,13 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
     for i, a := range os.Args[1:] {
         fmt.Printf("Argument %d is: %s\n", i, a)
     }
+
+### `os.Exit`
+
+    func Exit(code int)
+        Exit causes the current program to exit with the given status code.
+        Conventionally, code zero indicates success, non-zero an error. The
+        program terminates immediately; deferred functions are not run.
 
 ### `os.Open`
 
@@ -380,7 +419,72 @@ Example:
         Float 64 returns, as a float64, a pseudo-random number in [0.0,1.0)
         from the default Source.
 
+## `net`
+
+### `net/http`
+
+#### `net/http.Get`
+
+    func Get(url string) (resp *Response, err error)
+        Get issues a GET to the specified URL. If the response is one of the
+        following redirect codes, Get follows the redirect, up to a maximum of
+        10 redirects:
+
+        301 (Moved Permanently)
+        302 (Found)
+        303 (See Other)
+        307 (Temporary Redirect)
+        308 (Permanent Redirect)
+
+        An error is returned if there were to many redirects or if there was an
+        HTTP protocol error. A non-2xx response doesn't cause an error.
+
+        When err is nil, resp always contains a non-nil resp.Body. Caller
+        should close resp.Body when done reading from it.
+
+        Get is a wapper around DefaultClient.Get.
+
+        To make a request with custom headers, use NewRequest and
+        DefaultClient.Do.
+
+####  `net/http.Header`
+
+    type Header map[string][]string
+        A Header represents the key'value pairs in an HTTP header.
+
+#### `net/http.Response`
+
+    type Response struct {
+        // e.g. "200 OK"
+        Status              string
+        // e.g. 200
+        StatusCode          int
+        Proto               string
+        ProtoMajor          int
+        ProtoMinor          int
+        Header              header
+        Body                io.ReadCloser
+        ContentLength       int64
+        TransfferEncoding   []string
+        Close               bool
+        Uncompressed        bool
+        Trailer             Header
+        Request             *Request
+        TLS                 *tls.ConnectionState
+    }
+
+####  `net/http.Response.Body`
+
+    type Response struct {
+        Body io.ReadCloser
+    }
+
 ## `strings`
+
+### `strings.HasPrefix`
+
+    func HasPrefix(s, prefix string) bool
+        HasPrefix tests whether the string s begins with prefix.
 
 ### `strings.Join`
 
