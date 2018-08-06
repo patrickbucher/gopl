@@ -263,3 +263,27 @@ Add to a slice:
         population int
     }
     switzerland := country{name: "Switzerland", population: 8}
+
+## Channels
+
+Channels are created using the `make` builtin function, combined with the
+`chan` keyword and with an according data type:
+
+    ch := make(chan string)
+
+Data is written to the channel using the arrow operator:
+
+    ch <- "through the channel you go"
+
+Data is read to che channel using the arrow operator, too:
+
+    var str string
+    str <- ch
+
+## Go Routines
+
+Any function call can be executed concurrently by preceding it with the `go`
+keyword:
+
+    foobar(foo, bar) // synchronous call
+    go foobar(foo, bar) // asynchronuous call
