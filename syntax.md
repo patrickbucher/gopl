@@ -43,6 +43,13 @@ Looping over a map, `range` returns a key-value pair:
         // m[k] == v
    }
 
+The values returned by `range` can also be omitted, looping len(s) times
+without caring about the individual values of the slice:
+
+    for range s {
+        // do something
+    }
+
 ## Increment/Decrement
 
 The increment and decrement operators are short forms of adding/subtracting
