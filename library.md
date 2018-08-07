@@ -336,6 +336,13 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
         reads the whole file, it does not treat an EOF from Read as an error to
         be reported.
 
+## `log`
+
+### `log.Fatal`
+
+    func Fatal(v ...interface{})
+        Fatal is equivalent to Print() followed by a call to os.Exit(1).
+
 ## `os`
 
 ### `os.Args`
@@ -466,10 +473,57 @@ Example:
         To make a request with custom headers, use NewRequest and
         DefaultClient.Do.
 
-####  `net/http.Header`
+#### `net/http.HandleFunc`
+
+    func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
+        HandleFunc registers the handler function for the given pattern in the
+        DefaultServeMux. The documentation for ServeMux explains how patterns
+        are matched.
+
+#### `net/http.Header`
 
     type Header map[string][]string
         A Header represents the key'value pairs in an HTTP header.
+
+#### `net/http.ListenAndServe`
+
+    func ListenAndServe(addr string, handler Handler) error
+        ListenAndServe listens on the TCP network address addr and then calls
+        Serve with handler to handle requests on incoming connections. Accepted
+        connections are configured to enable TCP keep-alives. Handler is
+        typically nil, in which case the DefaultServeMux is used.
+
+#### `net/http.Request`
+
+    type Request struct {
+        Method              string
+        URL                 *url.URL
+        Proto               string
+        ProtoMajor          int
+        ProtoMinor          int
+        Header              header
+        Body                io.ReadCloser
+        GetBody             func() (io.ReadCloser, error)
+        ContentLength       int64
+        TransferEncoding    []string
+        Close               bool
+        Host                string
+        Form                url.Values
+        PostForm            url.Values
+        MultipartForm       *multipart.Form
+        Trailer             Header
+        RemoteAddr          string
+        RequestURI          string
+        TLS                 *tls.ConnectionState
+        Cancel              <-chan struct{}
+        Response            *Response
+    }
+        A Request represents an HTTP request received by a server or to be sent
+        by a client.
+
+        The field semantics differ slightly between client and server usage. In
+        addition to the notes on the fields below, see the documentation for
+        Request.Write and RoundTripper.
 
 #### `net/http.Response`
 
@@ -497,6 +551,53 @@ Example:
     type Response struct {
         Body io.ReadCloser
     }
+
+#### `net/http.ResponseWriter`
+
+    type ResposneWriter interface {
+        // Header returns the header map that will be sent by WriteHeader.
+        Header() Header
+
+        // Write writes the data to the connection as part of an HTTP reply.
+        Write([]byte) (int, error)
+
+        // WriteHeader sends an HTTP response header with the provided status
+        // code.
+        WriteHeader(statusCode int)
+    }
+        A ResponseWriter interface is used by an HTTP handler to construct an
+        HTTP response.
+
+        A ResponseWriter may not be used after the Handler.ServeHTTP method has
+        returned.
+
+### `net/url`
+
+#### `net/url.URL`
+
+    type URL struct {
+        Scheme      string
+        Opaque      string
+        User        *Userinfo
+        Host        string
+
+        // path (relative paths may omit leading slash)
+        Path        string
+        RawPath     string
+        ForceQuery  bool
+        RawQuery    string
+        Fragment    string
+    }
+        A URL represents a parsed URL (technically, a URI reference).
+
+        The general form represented is:
+
+        [scheme:][//[userinfo@host][/]path[?query][#fragment]
+
+        URLs that do not start with a slash after the scheme are interpreted
+        as:
+
+        scheme:opaque[?query][#fragment]
 
 ## `strings`
 
