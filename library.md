@@ -343,6 +343,12 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
     func Fatal(v ...interface{})
         Fatal is equivalent to Print() followed by a call to os.Exit(1).
 
+### `log.Print`
+
+    func Print(v ...interface{})
+        Print calls Output to print to the standard logger. Arguments are
+        handled i the manner of fmt.Print.
+
 ## `os`
 
 ### `os.Args`
@@ -496,23 +502,54 @@ Example:
 #### `net/http.Request`
 
     type Request struct {
+        // Method specifies the HTTP method (GET, POST, PUT, etc.).
+        // For client requests an empty string means GET.
         Method              string
+
+        // URL specifies either the URI being requested (for server requests)
+        // for the URL to access (for client requests).
         URL                 *url.URL
+
+        // The protocol version for incoming server requests.
         Proto               string
         ProtoMajor          int
         ProtoMinor          int
+
+        // Header contains the request header fields either received by the
+        // server or to be sent by the client.
         Header              header
+
         Body                io.ReadCloser
         GetBody             func() (io.ReadCloser, error)
         ContentLength       int64
         TransferEncoding    []string
         Close               bool
+
+        // For server requests Host specifies the host on which the URL is
+        // sought. Per RFC 2616, this is either the value of the "Host" header or
+        // the host name given in the URL itself. It may be of the form
+        // "host:port". For international domain names, Host may be in Punycode or
+        // Unicode form. Use golang.org/x/net/idna to convert it to either format
+        // if needed.
         Host                string
+
+        // Form contains the parsed form data, including both the URL field's
+        // query parameters and the POST or PUT form data. This field is only
+        // available after ParseForm is called. The HTTP client ignores Form and
+        // uses Body instead.
         Form                url.Values
+
         PostForm            url.Values
         MultipartForm       *multipart.Form
         Trailer             Header
+
+        // RemoteAddr allows HTTP servers and other software to record the
+        // network address that sent the request, usually for logging. This field
+        // is not filled in by ReadRequest and has no defined format. The HTTP
+        // server in this package sets RemoteAddr to an "IP:port" address before
+        // invoking a handler.
         RemoteAddr          string
+
         RequestURI          string
         TLS                 *tls.ConnectionState
         Cancel              <-chan struct{}
@@ -524,6 +561,14 @@ Example:
         The field semantics differ slightly between client and server usage. In
         addition to the notes on the fields below, see the documentation for
         Request.Write and RoundTripper.
+
+##### `net/http.Request.ParseForm`
+
+    func (r *Request) ParseForm() error
+        ParseForm populates r.Form and r.PostForm.
+
+        For all requests, ParseForm parses the raw query from the URL and
+        updates r.Form.
 
 #### `net/http.Response`
 
@@ -599,6 +644,13 @@ Example:
 
         scheme:opaque[?query][#fragment]
 
+## `strconv`
+
+### `strconv.Atoi`
+
+    func Atoi(s string) (int, error)
+        Atoi returns the result of ParseInt(s, 10, 0) converted to type int.
+
 ## `strings`
 
 ### `strings.HasPrefix`
@@ -636,6 +688,32 @@ Example:
 
     text := "this;is;a;test"
     tokens := strings.Split(text, ";")
+
+## `sync`
+
+### `sync.Mutex`
+
+    type Mutex struct { }
+        A Mutex is a mutual exclusion lock. The zero value for a Mutex is an
+        unlocked mutex.
+
+        A Mutex must not be copied after first use.
+
+#### `sync.Mutex.Lock`
+
+    func (m *Mutex) Lock()
+        Lock locks m. If the lock is already in use, the calling goroutine
+        blocks until the mutex is available.
+
+#### `sync.Mutex.Unlock`
+
+    func (m *Mutex) Unlock()
+        Unlock unlocks m. It is a run-time error if m is not locked on entry to
+        Unlock.
+
+        A locked Mutex is not associated with a particular goroutine. It is
+        allowed for one goroutine to lock a Mutex and then arrange for another
+        goroutine to unlock it.
 
 ## `time`
 

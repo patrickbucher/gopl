@@ -181,6 +181,25 @@ Import multiple packages:
 
 ## Functions
 
+TODO
+
+### Function Literal
+
+A function literal can stand wherever a function reference can. Thus this code:
+
+    func handler(w http.ResponseWriter, r *http.Request) {
+        // ...
+    }
+    http.HandleFunc("/", handler)
+
+Can be rewritten as:
+
+    http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+        // ... 
+    })
+
+Such a function is called -- for its lack of a name -- a anonymous function.
+
 ## `make`
 
 The `make` builtin function is used to build data structures, such as a `map`.
@@ -211,6 +230,17 @@ Maps can created using a literal:
     m := map[string]int{"a": 1, "b": 2, "c": 3}
 
 ## `if` Statement
+
+TODO
+
+### Combined `if` Statement
+
+The `if` statement can be combined with a declaration and initialization, thus
+removing the scope of the variable to the `if` block:
+
+    if err := request.ParseForm(); err != nil {
+        log.Fatal(err)
+    }
 
 ## `continue` Statement
 
@@ -294,3 +324,17 @@ keyword:
 
     foobar(foo, bar) // synchronous call
     go foobar(foo, bar) // asynchronuous call
+
+## Mutex
+
+A variable can be protected by a preceding mutex declaration:
+
+    var mu sync.Mutex
+    var count int
+
+Any protected access to the variable must be surrounded by lock/unlock
+instructions:
+
+    mu.Lock()
+    count++
+    mu.Unlock()
