@@ -253,6 +253,18 @@ Jump to the next iteration of a loop:
         fmt.Println(i)
     }
 
+## `break` Statement
+
+Leave the loop:
+
+    i := 0
+    for {
+        if i == 10 {
+            break
+        }
+        i++
+    }
+
 ## Casting
 
 Cast a byte slice to a string:
@@ -338,3 +350,59 @@ instructions:
     mu.Lock()
     count++
     mu.Unlock()
+
+## Switch
+
+For multi-way branches, the `switch` statement is an option:
+
+    switch resp.StatusCode {
+        case 200:
+            fmt.Println("OK")
+        case 400:
+            fmt.Println("client error")
+        case 500:
+            fmt.Println("server error")
+        default:
+            fmt.Println("something strange")
+    }
+
+There's no `break` needed to terminate the execution after a branch. The
+`fallthrough` statement can be used to fall through to the next branch (a
+tagless `switch` doesn't need an operand, it evaluates boolean expressions for
+every case):
+
+    switch {
+        case i > 100:
+            fmt.Println("bigger than hundred")
+            fallthrough
+        case i > 10:
+            fmt.Println("bigger than ten")
+            fallthrough
+        case i > 1:
+            fmt.Println("bigger than one")
+    }
+
+The `switch` statement can be combined with an initialization, limiting the
+scope of the initialized variable to the `switch` block:
+
+    switch i := rand.Intn(100); i {
+        case 13:
+            fmt.Println("what a coincidence")
+        default:
+            fmt.Println("whatever...")
+    }
+
+
+## Comments
+
+Single-line comments start with `//` and span to the rest of the line:
+
+    i++ // increment i
+
+Multi-line comments start with `/*` and end with `*/`:
+
+    /*
+     * I wanted to delete this code.
+     * But I was afraid.
+     * i--
+     */
