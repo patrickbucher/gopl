@@ -62,3 +62,27 @@ formatted output using _verbs_:
 - `\n`: new line
 - `\t`: tab
 - `\\`: backspace
+
+## Naming
+
+### Exported Names
+
+Names starting with a capital letter are exported, others not:
+
+type Person struct {
+    Firstname   string  // exported
+    Lastname    string  // exported
+    identity    int     // not exported
+}
+
+### Camel Case
+
+Go identifiers are written in CamelCase:
+
+    var yearOfBirth, durationInMillis int   // good
+    var year_of_birth, duration_in_milis    // bad
+
+Acronyms should be spelled in all capitals:
+
+    var exportedToHTML bool // good
+    var exportedToHtml bool // bad

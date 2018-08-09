@@ -159,6 +159,44 @@ There are four ways of declaring a variable:
 
 Option 1 and 2 are generally prefered.
 
+### Initialization
+
+Variables default to a zero value, defined by its type:
+
+    var i int       // 0
+    var f float32   // 0.0
+    var s string    // ""
+
+The elements of compund types also default to zero:
+
+    zeroes := make([]int, 3)
+    fmt.Println(zeroes[0], zeroes[1], zeroes[2]) // 0 0 0
+
+### Multiple Declarations
+
+Multiple variables can be declared with one `var` statement:
+
+    var a, b, c int
+
+### Tuple Assignment
+
+Multiple variables can be declared and assigned a value:
+
+    a, b, c := 1, 2, 3
+
+### The `new` Function
+
+Variables of any type can be declared using the `new` function:
+
+    i := new(int)
+    f := new(float32)
+    s := new(string)
+
+The `new` function returns a pointer:
+
+    fmt.Println(i, f, s) // prints addresses
+    fmt.Println(*i, *f, *s) // prints values
+
 ## Package Declaration
 
 Declare the package name on the top of a file:
@@ -406,3 +444,20 @@ Multi-line comments start with `/*` and end with `*/`:
      * But I was afraid.
      * i--
      */
+
+## Pointers
+
+Pointers are declared with an asterisk:
+
+    var i int // normal variable
+    var *p int // pointer variable
+
+Pointers store the address of a variable, which can be obtained using the
+ampersand (address-of operator):
+
+    p = &i
+
+The value can be assigned and used with the asterisk:
+
+    fmt.Println(*p)
+    *p = 3
