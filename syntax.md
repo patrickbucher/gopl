@@ -461,3 +461,22 @@ The value can be assigned and used with the asterisk:
 
     fmt.Println(*p)
     *p = 3
+
+## Type Declarations
+
+New types can be defined based on existing types:
+
+    type Celsius float32
+
+This helps when methods should apply only for a custom type, not for the underlying general type:
+
+    func (c Celsius) String() string {
+        return fmt.Sprintf("%g°C", c)
+    }
+
+## Type Conversion
+
+Every type `T` offers a conversion function `T()`:
+
+    i := 100     // int
+    j := int8(i) // int8

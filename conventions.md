@@ -23,6 +23,11 @@ preceding the `package` declaration:
     // strings.
     package strings
 
+If the package consists of multiple file, only one file should contain the
+package comment. This usually is the file with the name of the package itself
+(`foobar` package: `foobar.go`). To keep the source file short and clean,
+documentation can also be put into a file called `doc.go`.
+
 The comment preceding the `main` package describes the program as a whole:
 
     // Echo prints its command-line arguments.
@@ -86,3 +91,8 @@ Acronyms should be spelled in all capitals:
 
     var exportedToHTML bool // good
     var exportedToHtml bool // bad
+
+## Import Path
+
+The import path `org.acme/encabulator` is looked up in the directory
+`$GOPATH/src/org.acme/encabulator`
