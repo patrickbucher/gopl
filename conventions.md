@@ -10,6 +10,25 @@ compared to a library).
 The function `main()` in the `main` package is the starting point of a
 standalone program.
 
+## `init()` Function
+
+The function `init()` in every package is called upon the package's
+initialization, before `main` that is.
+
+    var i = 1
+    var f = 1.1
+    var s = "foo"
+
+    func init() {
+        i = 2
+        f = 2.2
+        s = "bar"
+    }
+
+    func main() {
+        fmt.Println(i, f, s) // prints 2 2.2 bar
+    }
+
 ## Braces
 
 Opening Braces must not stand on a new line.
