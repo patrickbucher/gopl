@@ -480,3 +480,16 @@ Every type `T` offers a conversion function `T()`:
 
     i := 100     // int
     j := int8(i) // int8
+
+## Bitwise Operations
+
+The bitwise right shift operator `>>` shifts the left-hand side integer
+operator n bits to the right, n being the right-hand side integer operator.
+
+    i := 15     // 15 decimal = 1111 binary
+    j := i >> 1 // 7 decimal = 111 binary
+
+The bitwise and operator `&` performs the and operation bit by bit:
+
+    i := 21     // 21 decimal = 10101 binary
+    j := i & 19 // 10101 & 10011 = 10001 = 17 decimal
