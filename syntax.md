@@ -493,3 +493,37 @@ The bitwise and operator `&` performs the and operation bit by bit:
 
     i := 21     // 21 decimal = 10101 binary
     j := i & 19 // 10101 & 10011 = 10001 = 17 decimal
+
+## Scope
+
+A variable's scope is determined by its enclosing lexical block:
+
+- universe: accessible everywhere
+- package: accessible in the current package
+- file: accessible in the current file
+- for, if, switch, select: accessible within the body denoted by curly braces
+- case: each case of a switch or select statement
+
+### Scope Redeclaration
+
+A declaration in a higher scope can be shadowed by a declaration in a lower scope:
+
+    package main
+
+    import "fmt"
+
+    var s = "foo"
+
+    func main() {
+        s := "bar"
+        if len(s) > 0 {
+            s := "qux"
+            fmt.Println(s) // qux
+        }
+        out()
+        fmt.Println(s) // bar
+    }
+
+    func out() {
+        fmt.Println(s) // foo
+    }
