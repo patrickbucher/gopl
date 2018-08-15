@@ -476,6 +476,29 @@ Example:
 
 ## `math`
 
+### `math.Cos`
+
+    func Cos(x float64) float64
+        Cos returns the cosine of the radian argument x.
+
+Example:
+
+    math.Cos(90) // -0.4480736161291701
+
+### `math.Hypot`
+
+    func Hypot(p, q float64) float64
+        Hypot returns Sqrt(p*p, q*q), taking care to avoid unnecessary overflow
+        and underflow.
+
+Example:
+
+    // Pythagoras: 3² + 4² = 5²
+    a := 3.0
+    b := 4.0
+    c := math.Hypot(a, b)
+    // c == 5.0
+
 ### `math.Pi`
 
     Pi  = 3.14159265358979323846264338327950288419716939937510582097494459

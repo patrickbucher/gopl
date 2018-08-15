@@ -104,6 +104,32 @@ The two adverbs mentioned can be combined:
     fmt.Printf("%#o %#[1]x %#[1]X\n", 10)
     // 012 0xa 0XA
 
+Integers can be right aligned using the width adverb:
+
+    fmt.Printf("%6d\n", 1)
+    fmt.Printf("%6d\n", 1000)
+    fmt.Printf("%6d\n", 1000000)
+
+Output:
+
+         1
+      1000
+   1000000
+
+Floating point number can be aligned using the width adverb. The first number
+indicates  the overall width of the number to print, including the decimal
+positions. The second number indicates the positions after the decimal point:
+
+    fmt.Printf("%6.2f\n", 10/3.0)
+    fmt.Printf("%6.2f\n", 10/3.0)
+    fmt.Printf("%6.2f\n", 10/3.0)
+
+Output:
+
+        3.33
+       33.33
+      333.33
+
 ## Escape Sequences
 
 - `\n`: new line

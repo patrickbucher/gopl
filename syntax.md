@@ -548,7 +548,9 @@ A declaration in a higher scope can be shadowed by a declaration in a lower scop
         - `uint`: 32 or 64 bits (platform dependant)
 - Floating Point
     - `float32` (single precision)
+        - biggest possible value: `math.MaxFloat32`
     - `float64` (double precision)
+        - biggest possible value: `math.MaxFloat64`
 
 ### Conversion
 
@@ -561,3 +563,26 @@ If at least one `float64` operand is involved, the result becomes a `float64`:
     10 / 3.0   // 3.33333333333333335 float64
     10.0 / 3   // 3.33333333333333335 float64
     10.0 / 3.0 // 3.33333333333333335 float64
+
+### Inf and NaN
+
+Infinite numbers are indicated using positive or negative infinity:
+
+    var z float64
+    fmt.Println(+1 / z) // +Inf
+    fmt.Println(-1 / z) // -Inf
+
+Operations such as zero divided by zero or the square root of -1 result in a
+"not a number" (`math.NaN`):
+
+    var z float64
+    fmt.Println(z / z)
+    fmt.Println(math.Sqrt(-1))
+
+The value `math.NaN` must not be used for comparisons, for it always results in
+`false`. Use `math.IsNaN` instead:
+
+    var z float64
+    math.IsNaN(1.0 / z) // false
+    math.IsNaN(z / 1.0) // false
+    math.IsNaN(z / z) // true
