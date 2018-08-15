@@ -112,9 +112,9 @@ Integers can be right aligned using the width adverb:
 
 Output:
 
-         1
-      1000
-   1000000
+          1
+       1000
+    1000000
 
 Floating point number can be aligned using the width adverb. The first number
 indicates  the overall width of the number to print, including the decimal
