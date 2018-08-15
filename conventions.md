@@ -59,7 +59,7 @@ formatted output using _verbs_:
 
 - integers
     - `%d`: decimal integer, `10`
-    - `%x`: hexa-decimal integer, `af9832`
+    - `%x`/`%X`: hexa-decimal integer, `af9832`/`AF9832`
     - `%o`: octal integer, `245243`
     - `%b`: binary integer, `10011010110`
 - floating point numbers
@@ -80,6 +80,29 @@ formatted output using _verbs_:
         - `fmt.Println("%v", fmt.Println) // func(...interface {}) (int, error)`
         - `fmt.Println("%v", 10/3.0) // float64`
     - `%%`: literal `%`
+
+### Adverbs
+
+If an argument is needed twice:
+
+    fmt.Printf("%v %T\n", 10/3, 10/3)
+
+It can be reused using the `[1]` adverb:
+
+    fmt.Printf("%v %[1]T\n", 10/3)
+
+The adverb can deal with any positive number >0 within the arguments index
+range.
+
+The prefix of octal and hexadecimal numbers can be printed using the `#` adverb:
+
+    fmt.Printf("%#o %#x %#X\n", 10, 10, 10)
+    // 012 0xa 0XA
+
+The two adverbs mentioned can be combined:
+
+    fmt.Printf("%#o %#[1]x %#[1]X\n", 10)
+    // 012 0xa 0XA
 
 ## Escape Sequences
 

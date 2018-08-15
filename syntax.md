@@ -489,6 +489,9 @@ operator n bits to the right, n being the right-hand side integer operator.
     i := 15     // 15 decimal = 1111 binary
     j := i >> 1 // 7 decimal = 111 binary
 
+The right shift applied to signed data types _will not_ shift the leftmost bit,
+thus keeping the sign bit in place.
+
 The bitwise and operator `&` performs the and operation bit by bit:
 
     i := 21     // 21 decimal = 10101 binary
@@ -527,3 +530,34 @@ A declaration in a higher scope can be shadowed by a declaration in a lower scop
     func out() {
         fmt.Println(s) // foo
     }
+
+## Basic Data Types
+
+- Integer
+    - Signed
+        - `int8`
+        - `int16`
+        - `int32`/`rune` (for unicode code points)
+        - `int64`
+        - `int`: 32 or 64 bits (platform dependant)
+    - Unsigned (mainly for bitwise operations)
+        - `uint8`/`byte`
+        - `uint16`
+        - `uint32`
+        - `uint64`
+        - `uint`: 32 or 64 bits (platform dependant)
+- Floating Point
+    - `float32` (single precision)
+    - `float64` (double precision)
+
+### Conversion
+
+A integer division results in an integer result:
+
+    10 / 3 // 3 int
+
+If at least one `float64` operand is involved, the result becomes a `float64`:
+
+    10 / 3.0   // 3.33333333333333335 float64
+    10.0 / 3   // 3.33333333333333335 float64
+    10.0 / 3.0 // 3.33333333333333335 float64
