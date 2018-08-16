@@ -476,6 +476,31 @@ Example:
 
 ## `math`
 
+### `math/cmplx`
+
+Package cmplx provides basic constants and mathematical functions for complex
+numbers.
+
+#### `math/cmplx.Abs`
+
+    func Abs(x complex128) float64
+        Abs returns the absolute value (also called the modulus) of x.
+
+Example:
+
+    c := 1 + 1i
+    a := cmplx.Abs(c) // 1.4142135623730951
+
+#### `math/cmplx.Sqrt`
+
+    func Sqrt(x complex128) complex128
+        Sqrt returns the square root of x. The result r is chosen so that
+        eral(r) ≥ 0 and imag(r) has the same sign as imag(x). 
+
+Example:
+
+    c := cmplx.Sqrt(-1) // (0+1i)
+
 ### `math.Cos`
 
     func Cos(x float64) float64

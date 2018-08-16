@@ -551,6 +551,11 @@ A declaration in a higher scope can be shadowed by a declaration in a lower scop
         - biggest possible value: `math.MaxFloat32`
     - `float64` (double precision)
         - biggest possible value: `math.MaxFloat64`
+- Complex Numbers
+    - `complex64`
+        - consists of two `float32` values
+    - `complex128`
+        - consists of two `float64` values
 
 ### Conversion
 
@@ -586,3 +591,26 @@ The value `math.NaN` must not be used for comparisons, for it always results in
     math.IsNaN(1.0 / z) // false
     math.IsNaN(z / 1.0) // false
     math.IsNaN(z / z) // true
+
+### Complex Numbers
+
+Create a complex number out of a real and imaginary part:
+
+    var r float32
+    var i float32
+    c := complex(r, i) // 0+0i, complex64
+
+    var r float64
+    var i float64
+    c := complex(r, i) // 0+0i, complex128
+
+Extract the real and imaginary part:
+
+    c := complex(3.0, 1.0)
+    r := real(c) // 3.0
+    i := imag(c) // 1.0
+
+Create a complex number using a imaginary literal:
+
+    c := 3 + 1i
+    fmt.Printf("%v %[1]T\n", c) // (3+1i) complex128
