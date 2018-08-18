@@ -50,3 +50,7 @@ Suggested configuration in `.vimrc` (format upon saving using `goimports`):
 
     let g:go_fmt_autosave = 1
     let g:go_fmt_command = "goimports"
+
+Install the binaries for `vim-go`:
+
+    :GoInstallBinaries
