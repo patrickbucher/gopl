@@ -24,9 +24,11 @@ Make sure to have the following folders in `$GOPATH`:
 - `bin`: binaries
 - `pkg`: packages
 
-    mkdir -p $HOME/go/src
-    mkdir -p $HOME/go/bin
-    mkdir -p $HOME/go/pkg
+```bash
+mkdir -p $HOME/go/src
+mkdir -p $HOME/go/bin
+mkdir -p $HOME/go/pkg
+```
 
 ### PATH
 
