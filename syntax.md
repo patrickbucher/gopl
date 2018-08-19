@@ -326,6 +326,49 @@ Multiple constants can be combined to one declaration:
 
 Constant declarations can appear at the package or function level.
 
+If all constants are of the same type, it only must be declared for the first
+constant:
+
+    const (
+        a int = 0
+        b     = 1
+        c     = 2
+        d     = 3
+    )
+
+Constants belong to the group of basic data types like `int` or `float`, but
+are not typed as strictly as variables in the terms of `int32` or `float64`.
+The effective type is determined context-dependant upon compilation:
+
+    const pi = 3.14
+    var f32 float32 = pi
+    var f64 float64 = pi
+    fmt.Printf("%v %[1]T\n", f32) // 3.14 float32
+    fmt.Printf("%v %[1]T\n", f64) // 3.14 float64
+
+### Constant Generator `iota`
+
+Grouped constants can be automatically initialized with ascending numbers
+starting from 0 using `iota`:
+
+    const (
+        Sunday Weekday = iota
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+    )
+
+`iota` can also be used for calculations:
+
+    const (
+        open int = iota * 1000 // 0 * 1000 = 0
+        closed                 // 1 * 1000 = 1000
+        pending                // 2 * 1000 = 2000
+    )
+
 ## The `append` function
 
 Add to a slice:
