@@ -166,6 +166,17 @@ Example:
 
     fmt.Fprintf(os.Stderr, "%v (%T)\n", err, err)
 
+### `fmt.Scanf`
+
+    func Scanf(format string, a ...interfac{}) (n int, err error)
+        Scanf scans text read from standard input, storing successive
+        space-separated values into successive arguments as determined by the
+        format. It returns the number of items successfully scanned. If that is
+        less than the number of arguments, err will report why. Newlines in the
+        input must match newlines in the format. The one exception: the verb %c
+        always scans the next rune in the input, even if it is a space (or tab
+        etc.) or newlie.
+
 ### `fmt.Sprint`
 
     func Sprint(a ...interface{}) string
@@ -865,6 +876,17 @@ Example:
 
     func Atoi(s string) (int, error)
         Atoi returns the result of ParseInt(s, 10, 0) converted to type int.
+
+### `strconv.Itoa`
+
+    func Itoa(i int) string
+        Itoa is shorthand for FormatInt(int64(i), 10)
+
+### `strconv.ParseInt`
+
+    func ParseInt(s string, base int, bitSize int) (i int64, err error)
+        ParseInt interprets a string s in the given base (0, 2 to 26) and bit
+        size (0 to 64) and returns the corresponding value i.
 
 ## `strings`
 
