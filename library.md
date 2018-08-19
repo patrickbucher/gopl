@@ -476,6 +476,80 @@ Example:
 
 ## `math`
 
+### `math/big`
+
+    Package big implements arbitrary-precision arithmetic (big numbers). The
+    following numeric types are supported:
+
+        Int     signed integers
+        Rat     rational numbers
+        Float   floating-point numbers
+
+#### `math/big.Float`
+
+    type Float struct { }
+        A nonzero finite Float represents a multi-precision floating point
+        number.
+
+##### `math/big.NewFloat`
+
+    func NewFloat(x float64) *Float
+        NewFloat allocates and returns a new Float set to x, with precision 53
+        and rounding mode ToNearestEven. NewFloat p anics with ErrNaN if x is a
+        NaN.
+
+##### `math/big.Float.Add`
+
+    func (z *Float) Add(x, y *Float) *Float
+        Add sets z to the rounded sum x+y and returns z. If z's precision is 0,
+        it is changed to the larger of x's or y's precision before the
+        operation.
+
+##### `math/big.Float.Float64`
+
+    func (x *Float) Float64() (float64, Accuracy)
+        Float64 returns the float64 value nearest to x.
+
+##### `math/big.Float.Mul`
+
+    func (z *Float) Mul(x, y *Float) *Float
+        Mul sets z to the rounded product x*y and returns z. Precision,
+        rounding, and accuracy reporting are as for Add. Mul panics with ErrNaN
+        if one operand is zero and the other operand an infinity. The value of
+        z is undefined in that case.
+
+##### `math/big.Float.Sqrt`
+
+    func (z *Float) Sqrt(x *Float) *Float
+        Sqrt sets z to the rounded square root of x, and returns it.
+
+#### `math/big.Rat`
+
+    type Rat struct { }
+        A Rat represents a quotient a/b of arbitrary precision. The zero value
+        for a Rat represents the value 0.
+
+##### `math/big.NewRat`
+
+    func NewRat(a, b int64) *Rat
+        NewRat creates a new Rat with numerator a and denominator b.
+
+##### `math/big.Rat.Add`
+
+    func (z *Rat) Add(x, y *Rat) *Rat
+        Add sets z to the sum x+y and returns z.
+
+##### `math/big.Rat.Float64`
+
+    func (x *Rat) Float64() (f float64, exact bool)
+        Float64 returns the nearest float64 value for x and a bool indicating
+        whether f represents x exactly.
+
+##### `math/big.Rat.Mul`
+
+    func (z *Rat) Mul(x, y *Rat) *Rat
+        Mul sets z to the product x*y and returns z.
+
 ### `math/cmplx`
 
 Package cmplx provides basic constants and mathematical functions for complex
