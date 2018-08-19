@@ -556,6 +556,9 @@ A declaration in a higher scope can be shadowed by a declaration in a lower scop
         - consists of two `float32` values
     - `complex128`
         - consists of two `float64` values
+- Strings
+    - `string` (UTF-8 encoded sequence of bytes, immutable)
+    - `rune` (single unicode code point)
 
 ### Conversion
 
@@ -614,3 +617,62 @@ Create a complex number using a imaginary literal:
 
     c := 3 + 1i
     fmt.Printf("%v %[1]T\n", c) // (3+1i) complex128
+
+### Strings
+
+The type `string` is an immutable sequence of bytes, not of runes! Strings are UTF-8 encoded.
+
+The `len` builtin function returns the number of bytes in a string:
+
+    s := "Привет, мир!"
+    fmt.Println(len(s)) // 21
+
+Indices can be used to access the byte at a specific position:
+
+    fmt.Println(s[12]) // 44 (the comma)
+
+Strings are compared byte by byte.
+
+A string can be converted to an array of runes:
+
+    s := "hello"
+    r := []rune(s)
+
+An array of runes can be converted to a string:
+
+    r := []rune{104, 101, 108, 108, 111}
+    s := string(r) // "hello"
+
+The `range` operator automatically decodes the UTF-8 encoded string, providing runes:
+
+    s := "Привет, мир!"
+    for i, r := range s {
+        fmt.Printf("%2d: %c\n", i, r)
+    }
+
+     0: П
+     2: р
+     4: и
+     6: в
+     8: е
+    10: т
+    12: ,
+    13:  
+    14: м
+    16: и
+    18: р
+    20: !
+
+The indices are _not_ subsequent, but represent the start index of a rune in
+the string's underlying byte array.
+
+#### Raw Strings
+
+Raw strings within backticks can be freely formatted and span over multiple lines:
+
+html := `<html>
+    <head><title>Hello, World!</title></head>
+    <body><h1>Hello, World!</h1></body>
+</html>`
+
+They are often used for templates and regular expressions.

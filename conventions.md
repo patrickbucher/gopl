@@ -132,9 +132,21 @@ Output:
 
 ## Escape Sequences
 
+- `\a`: alarm bell
+- `\b`: backspace
+- `\f`: form feed
 - `\n`: new line
+- `\r`: carriage return
 - `\t`: tab
-- `\\`: backspace
+- `\v`: vertical tab
+- `\'`: literal apostrophe (to express `'` within rune literals: `'\''`)
+- `\"`: literal double quotation mark (to express `"` within string literals:
+  `"\""`)
+- `\\`: literal backspace
+- `\xhh`: hexadecimal number (`'\xff'`)
+- `\ooo`: octal number (`'\377'`)
+- `\uhhhh`: unicode code point (16 bit)
+- `\Uhhhhhhhh`: unicode code point (32 bit)
 
 ## Naming
 
@@ -164,3 +176,15 @@ Acronyms should be spelled in all capitals:
 
 The import path `org.acme/encabulator` is looked up in the directory
 `$GOPATH/src/org.acme/encabulator`
+
+## UTF-8
+
+Strings are encoded in UTF-8. A unicode code point can be represented from one
+byte (ASCII) up to four bytes. The first byte starts with the sequence `0` (one
+byte), `11` (two bytes), `110` (three bytes) or `1110` (four bytes). Each
+subsequent byte starts with `10`.
+
+    0xxxxxxx                                from     0 to      127 (ASCII)
+    11xxxxxx 10xxxxxx                       from   128 to     2047
+    110xxxxx 10xxxxxx 10xxxxxx              from  2048 to    65535
+    1110xxxx 10xxxxxx 10xxxxxx 10xxxxxx     from 65536 to 0x10ffff

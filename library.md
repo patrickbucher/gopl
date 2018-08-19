@@ -397,83 +397,6 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
         Print calls Output to print to the standard logger. Arguments are
         handled i the manner of fmt.Print.
 
-## `os`
-
-### `os.Args`
-
-    var Args []string
-        Args hold the command-line arguments, starting with the program name.
-
-    for i, a := range os.Args[1:] {
-        fmt.Printf("Argument %d is: %s\n", i, a)
-    }
-
-### `os.Exit`
-
-    func Exit(code int)
-        Exit causes the current program to exit with the given status code.
-        Conventionally, code zero indicates success, non-zero an error. The
-        program terminates immediately; deferred functions are not run.
-
-### `os.Open`
-
-    func Open(name string) (*File, error)
-        Open opens the named file for reading. If successful, methods on the
-        returned file can be used for reading; the associated file descriptor
-        has mode O_RDONLY. If there is an error, it will be of type *PathError.
-
-Example:
-
-    f, err := os.Open('foo.txt')
-    if err != nil {
-        // read from f
-        f.Close()
-    }
-
-
-### `os.File`
-
-    type File struct { }
-        File represents an open file descriptor.
-
-#### `os.File.Close`
-
-    func (f *File) Close() error
-        Close closes the File, rendering it unusable for I/O. It returns an
-        error, if any.
-
-Example:
-
-    f, err := os.Open('foo.txt')
-    if err != nil {
-        // read from f
-        f.Close()
-    }
-
-### `os.Stdin`, `os.Stdout` and `os.Stderr`
-
-    var (
-        Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")
-        Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
-        Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
-    )
-        Stdin, Stdout, and Stderr are open Files pointing to the standard
-        input, standard output, and standard error file descriptors.
-
-        Note that the Go runtime writes to standard error for panics and
-        crashes: closing Stderr may cause those messages to go elsewhere,
-        perhapts to a file opened later.
-
-Example:
-
-    input := bufio.NewScanner(os.Stdin)
-    for input.Scan() {
-        fmt.Println(input.Text() + "\n")
-    }
-
-    fmt.Fprintln(os.Stdout, "this is a message")
-    fmt.Fprintln(os.Stderr, "this is an error")
-
 ## `math`
 
 ### `math/big`
@@ -814,6 +737,94 @@ Example:
 
         scheme:opaque[?query][#fragment]
 
+## `os`
+
+### `os.Args`
+
+    var Args []string
+        Args hold the command-line arguments, starting with the program name.
+
+    for i, a := range os.Args[1:] {
+        fmt.Printf("Argument %d is: %s\n", i, a)
+    }
+
+### `os.Exit`
+
+    func Exit(code int)
+        Exit causes the current program to exit with the given status code.
+        Conventionally, code zero indicates success, non-zero an error. The
+        program terminates immediately; deferred functions are not run.
+
+### `os.Open`
+
+    func Open(name string) (*File, error)
+        Open opens the named file for reading. If successful, methods on the
+        returned file can be used for reading; the associated file descriptor
+        has mode O_RDONLY. If there is an error, it will be of type *PathError.
+
+Example:
+
+    f, err := os.Open('foo.txt')
+    if err != nil {
+        // read from f
+        f.Close()
+    }
+
+
+### `os.File`
+
+    type File struct { }
+        File represents an open file descriptor.
+
+#### `os.File.Close`
+
+    func (f *File) Close() error
+        Close closes the File, rendering it unusable for I/O. It returns an
+        error, if any.
+
+Example:
+
+    f, err := os.Open('foo.txt')
+    if err != nil {
+        // read from f
+        f.Close()
+    }
+
+### `os.Stdin`, `os.Stdout` and `os.Stderr`
+
+    var (
+        Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")
+        Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
+        Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
+    )
+        Stdin, Stdout, and Stderr are open Files pointing to the standard
+        input, standard output, and standard error file descriptors.
+
+        Note that the Go runtime writes to standard error for panics and
+        crashes: closing Stderr may cause those messages to go elsewhere,
+        perhapts to a file opened later.
+
+Example:
+
+    input := bufio.NewScanner(os.Stdin)
+    for input.Scan() {
+        fmt.Println(input.Text() + "\n")
+    }
+
+    fmt.Fprintln(os.Stdout, "this is a message")
+    fmt.Fprintln(os.Stderr, "this is an error")
+
+## `path`
+
+    Package path implements utility routines for manipulating slash-separated
+    paths.
+
+### `path/filepath`
+
+    Package filepath implements utility routines for manipulating filename
+    paths in a way compatible with the target operating system-defined file
+    paths.
+
 ## `strconv`
 
 ### `strconv.Atoi`
@@ -827,6 +838,12 @@ Example:
 
     func HasPrefix(s, prefix string) bool
         HasPrefix tests whether the string s begins with prefix.
+
+### `strings.LastIndex`
+
+    func LastIndex(s, substr string) int
+        LastIndex returns the index of the last instance of substr in s, or -1
+        if substr is not present in s.
 
 ### `strings.Join`
 
@@ -950,3 +967,34 @@ Example:
         accurate comparison available and correctly handles the case when only
         one of its arguments has a monotonic clock reading.
 
+## `unicode`
+
+    Package unicode provides data and functions to test some properties of
+    Unicode code points.
+
+### `unicode/utf8`
+
+    Package utf8 implements functions and constants to support text encoded in
+    UTF-8. It includes functions to translate between runes and UTF-8 byte
+    sequences.
+
+#### `unicode/utf8.DecodeRune`
+
+    func DecodeRune(p []byte) (r rune, size int)
+        DecodeRune unpacks the first UTF-8 encoding in p and returns the rune
+        and its width in bytes.
+
+#### `unicode/utf8.DecodeRuneInString`
+
+    func DecodeRuneInString(s string) (r rune, size int)
+        DecodeRuneInString is like DecodeRune but its input is a string.
+
+#### `unicode/utf8.RuneCount`
+
+    func RuneCount(p []byte) int
+        RuneCount returns the number of runes in p.
+
+#### `unicode/utf8.RuneCountInString`
+
+    func RuneCountInString(s string) (n int)
+        RuneCountInString is like RuneCount but its input is a string.
