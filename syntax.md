@@ -749,9 +749,9 @@ the string's underlying byte array.
 
 Raw strings within backticks can be freely formatted and span over multiple lines:
 
-html := `<html>
-    <head><title>Hello, World!</title></head>
-    <body><h1>Hello, World!</h1></body>
-</html>`
+    html := `<html>
+        <head><title>Hello, World!</title></head>
+        <body><h1>Hello, World!</h1></body>
+    </html>`
 
 They are often used for templates and regular expressions.
