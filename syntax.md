@@ -107,9 +107,21 @@ zero initialization:
     c := [...]int{99: 10} // all entries are zero, except the last at index 99
     len(c) // 100 
 
+Arrays of equal length can be compared:
+
+    a := [...]int{1, 2, 3}
+    b := [...]int{1, 2, 3}
+    c := [...]int{2, 1, 3}
+
+    a == b // true
+    a == c // false, same elements but different order
+
 The length of an array belongs to its type definition! A function requiring a
 `[16]byte` array won't accept a `[32]byte` array.
 
+    a := [...]int{1, 2, 3}
+    d := [...]int{2, 1, 3, 4}
+    a == d // compile error (mismatched types [3]int and [4]int)
 
 ## Slicing
 
