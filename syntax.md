@@ -87,6 +87,30 @@ Return the length of a slice or map:
     m := map[string]int{"a": 1, "b", 2, "c", 3}
     len(m) // 3
 
+## Arrays
+
+Arrays can be initialized with an array literal, defining its length:
+
+    a := [3]int{1, 2, 3}
+
+The length can be omitted, leaving its determination up to the compiler:
+
+    b := [...]int{1, 2, 3}
+
+Specific items can be initialized by providing their indices:
+
+    fib := [...]int{0: 1, 1: 1, 2: 2, 3: 3, 4: 5}
+
+Not all indices have to be set upon initialization, making use of the automatic
+zero initialization:
+
+    c := [...]int{99: 10} // all entries are zero, except the last at index 99
+    len(c) // 100 
+
+The length of an array belongs to its type definition! A function requiring a
+`[16]byte` array won't accept a `[32]byte` array.
+
+
 ## Slicing
 
 Access an individual item `i` in a slice `s`:

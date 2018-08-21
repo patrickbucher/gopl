@@ -83,6 +83,35 @@ Example:
         as needed. The return value n is the length of s; err is always nil. If
         the buffer becomes too large, WriteString will panic with ErrTooLarge.
 
+## `crypto`
+
+    Package crypto collects common cryptographic constants.
+
+### `crypto/sha256`
+
+    Package sha256 implements the SHA224 and SHA256 hash algorithms as defined
+    in FIPS 180-4.
+
+#### `crypto/sha256.Sum256`
+
+    func Sum256(data []byte) [Size]byte
+        Sum256 returns the SHA256 checksum of the data.
+
+### `crypto/sha512`
+
+    Package sha512 implements the SHA-384, SHA-512, SHA-512/224, and
+    SHA-512/256 hash algorithms as defined in FIPS 180-4.
+
+#### `crypto/sha512.Sum384`
+
+    func Sum384(data []byte) [Size]byte
+        Sum384 returns the SHA384 checksum of the data.
+
+#### `crypto/sha512.Sum512`
+
+    func Sum512(data []byte) [Size]byte
+        Sum512 returns the SHA512 checksum of the data.
+
 ## `flag`
 
 ### `flag.Args`
