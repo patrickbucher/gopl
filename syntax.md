@@ -152,6 +152,18 @@ If both boundaries are omitted, the colon can be omitted, too:
     s[:] # elements 0 to len(s)-1
     s # same as above
 
+Slices cannot be compared to each other for equalty using the `==` operator.
+The only legal comparison is against `nil`:
+
+    a := []int{1, 2, 3}
+    b := []int{9, 8, 7}
+
+    a == b // illegal
+    a != b // illegal
+
+    a != nil // legal
+    b == nil // legal
+
 ## Blank Identifier `_`
 
 If a returned variable is not of interest, and since unused variables cause a
@@ -277,6 +289,55 @@ Such a function is called -- for its lack of a name -- a anonymous function.
 ## `make`
 
 The `make` builtin function is used to build data structures, such as a `map`.
+
+### Variadic Function
+
+The last function argument can be variadic:
+
+    func sum(s ...int) int {
+        var sum int
+        for i := range s{
+            sum += s[i]
+        }
+        return sum
+    }
+
+It can be called using zero to many parameters:
+
+    sum()
+    sum(1)
+    sum(1, 2)
+    sum(1, 2, 3)
+
+## Slices
+
+Slices can be created with the `make` function, providing a length and a
+optional capacity:
+
+    s := make([]int, 3, 5) // len = 3, cap = 5
+    s[0] = 1
+    s[1] = 2
+    s[2] = 3
+    fmt.Println(len(s), cap(s)) // 3 5
+
+A slice can grow up to its capacity using `append`:
+
+    s = append(s, 4) // [1 2 3 4]
+    fmt.Println(len(s), cap(s)) // 4 5
+
+If the capacity is reached, the underlying array will be enlarged:
+
+    s = append(s, 5)
+    s = append(s, 6)
+    fmt.Println(len(s), cap(s)) // 6 6
+
+Slices can be copied using the `copy` function. Only as many entries will be
+copied, as the target slice can hold with its capacity:
+
+    a := []int{1, 2, 3}
+    b := make([]int, 2)
+    copy(b, a) // b = a
+    fmt.Println(b) // [1 2]
 
 ## Maps
 
@@ -414,7 +475,14 @@ Add to a slice:
 
 ## Composite Literals
 
+### Array
+
+    fib :=[5]int{1, 1, 2, 3, 5}
+    fib :=[...]int{1, 1, 2, 3, 5}
+
 ### Slice
+
+Unlike arrays, a slice literal doesn't need a size:
 
     fib := []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89}
 

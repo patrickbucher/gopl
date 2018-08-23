@@ -21,3 +21,29 @@ Compile a Go program:
 
 Organizes -- adds missing, removes unnecessary, orders in alphabetical order --
 imports in a package.
+
+## `go test`
+
+Run the tests of the current package:
+
+    go test
+
+Run the tests with test coverage:
+
+    go test -cover
+
+Store the coverage (activates the `cover` flag implicitly):
+
+    go test -coverprofile=coverage.out
+
+Display a HTML report for the coverage:
+
+    go tool cover -html=coverage.out 
+
+Store the coverage report instead of opening it:
+
+    go tool cover -html=coverage.out -o=coverage.html
+
+Run the benchmarks (matching the pattern `.`, thus any benchmark):
+
+    go test -bench=.

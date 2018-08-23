@@ -83,6 +83,13 @@ Example:
         as needed. The return value n is the length of s; err is always nil. If
         the buffer becomes too large, WriteString will panic with ErrTooLarge.
 
+#### `bytes.Equal`
+
+    func Equal(a, b []byte) bool
+        Equal returns a boolean reporting whether a and b are the same length
+        and contain the same bytes. A nil argument is equivalent to an empty
+        slice.
+
 ## `crypto`
 
     Package crypto collects common cryptographic constants.
