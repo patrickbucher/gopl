@@ -2,6 +2,27 @@
 
 ## `bufio`
 
+    Package bufio implements buffered I/O. It wraps an io.Reader or io.Writer
+    object, creating another object (Reader or Writer) that also implements the
+    interface but provides buffering and some help for textual I/O.
+
+### `bufio.NewReader`
+
+    func NewReader(rd io.Reader) *Reader
+        NewReader returns a new Reader whose buffer has the default size.
+
+### `bufio.Reader`
+
+    type Reader struct {}
+        Reader implements buffering for an io.Reader object.
+
+#### `bufio.Reader.ReadRune`
+
+    func (b *Reader) ReadRune() (r rune, size int, err error)
+        ReadRune reads a single UTF-8 encoded Unicode character and returns the
+        rune and its size in bytes. If the encoded rune is invalid, it consumes
+        one byte and returns unicode.ReplacementChar (U+FFFD) with a size of 1.
+
 ### `bufio.Scanner`
 
     type Scanner struct { }
@@ -415,6 +436,15 @@ Example: A 2x2 square with a black pixel switching from top-left to bottom-right
         If src implements the WriterTo interface, the copy is implemented by
         calling src.WriteTo(dst). Otherwise, if dst implements the ReaderFrom
         interface, the copy is implemented by calling dst.ReadFrom(src).
+
+### `io.EOF`
+
+    var EOF = errors.New("EOF")
+        EOF is the error returned by Read when no more input is available.
+        Functions should return EOF only to signal a graceful end of input. If
+        the EOF occurs unexpectedly in a structured data stream, the
+        appropriate error is either ErrUnexpectedEOF or some other error giving
+        more detail.
 
 ### `io.ReadCloser`
 
@@ -906,6 +936,16 @@ Example:
     paths in a way compatible with the target operating system-defined file
     paths.
 
+## `sort`
+
+    Package sort provides primitives for sorting slices and user-defined
+    collections.
+
+### `sort.Strings`
+
+    func Strings(a []string)
+        Strings sorts a slice of strings in increasing order.
+
 ## `strconv`
 
 ### `strconv.Atoi`
@@ -1090,6 +1130,10 @@ Example:
     Package unicode provides data and functions to test some properties of
     Unicode code points.
 
+### `unicode.ReplacementChar`
+
+    const ReplacementChar = '\uFFFD' // Represents invalid code points.
+
 ### `unicode/utf8`
 
     Package utf8 implements functions and constants to support text encoded in
@@ -1106,6 +1150,11 @@ Example:
 
     func DecodeRuneInString(s string) (r rune, size int)
         DecodeRuneInString is like DecodeRune but its input is a string.
+
+#### `unicode/utf8.UTFMax`
+
+    // maximum number of bytes of a UTF-8 encoded Unicode character.
+    const UTFMax = 4
 
 #### `unicode/utf8.RuneCount`
 

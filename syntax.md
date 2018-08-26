@@ -352,7 +352,7 @@ Entries can be added/changed by assignment:
 
     m["age"] = 31
 
-Values can be accessed by its key:
+Values can be accessed by its key (subscripting):
 
     age := map["age"] 
 
@@ -360,9 +360,64 @@ Trying to access non-existent entries returns the zero value of the value type:
 
     weight := map["weight"] // weight == 0
 
+In order to distinguish between the default zero value from a zero value
+actually contained in the list, a map subscription always returns an additional
+`bool`, indicating whether or not the key used for retrieval is contained in
+the map:
+
+    pop := map[string]int{
+        "Switzerland": 8,
+        "Russia":      150,
+        "Germany":     80,
+    }
+    germanPop, ok := map["Germany"] // ok == true, germapPop == 80
+    frenchPop, ok := map["France"] // ok == false, frenchPop == 0
+
+The returned `bool` value is often used in combination with an `if` statement:
+
+    if pop, ok := pop["Switzerland"]; ok {
+        // do something with pop
+    }
+
 Maps can created using a literal:
 
     m := map[string]int{"a": 1, "b": 2, "c": 3}
+
+Any comparable type can be used as a map key. Slices and Maps, which are _not_
+comparable, hence must not be used. However, their string representation can:
+
+	netWorth := make(map[string]float64)
+	kids := []string{"Bart", "Lisa", "Maggie"}
+	parents := []string{"Homer", "Marge"}
+	villains := []string{"Monty", "Fat Tony"}
+	sliceToKey := func(s []string) string {
+		return fmt.Sprintf("%v", s)
+	}
+
+	// storing
+	netWorth[sliceToKey(kids)] = 2453.34
+	netWorth[sliceToKey(parents)] = 12594.95
+	netWorth[sliceToKey(villains)] = 1746239875.38
+
+	// retrieving
+	kidsWorth := netWorth[sliceToKey(kids)]
+	parentsWorth := netWorth[sliceToKey(parents)]
+	villainsWorth := netWorth[sliceToKey(villains)]
+
+### Removing Entries
+
+Map entries can be removed with the `delete` builtin function:
+
+    age := map[string]int{
+        "Bart":  10,
+        "Lisa":  8,
+        "Monty": 112,
+    }
+    delete(age, "Bart")
+
+Attempts to delete by non-existant keys fail silently:
+
+    delete(age, "Maggie") // nothing happens
 
 ## `if` Statement
 
