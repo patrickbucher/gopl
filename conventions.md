@@ -130,6 +130,22 @@ Output:
        33.33
       333.33
 
+The `#` adverb to the `%v` verb outputs the member names and the values of a
+struct variable:
+
+    dilbert := struct {
+        Name string
+        Age  int
+    } {
+        "Dilbert",
+        42,
+    }
+    fmt.Printf("%#v\n", dilbert)
+
+Output:
+
+struct { Name string; Age int }{Name:"Dilbert", Age:42}
+
 ## Escape Sequences
 
 - `\a`: alarm bell

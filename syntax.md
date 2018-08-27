@@ -878,3 +878,123 @@ Raw strings within backticks can be freely formatted and span over multiple line
     </html>`
 
 They are often used for templates and regular expressions.
+
+## Structs
+
+Structs combine basic and and composite types to new composite types:
+
+    type Person struct {
+        Name    string
+        Age     int
+        Hobbies []string
+    }
+
+Struct variables can be initialized explicitly with member names listed in any
+sequence:
+
+    dilbert := Person{
+        Name:    "Dilbert",
+        Age:     42,
+        Hobbies: []string{"Engineering"},
+    }
+
+Or implicitly, following the declaraion's sequence of members:
+
+    wally := Person{"Wally", 49, []string{"Idling"}}
+
+Structs are comparable, if _all_ of their members are comparable:
+
+    type Animal struct {
+        Name    string
+        Legs    int
+    }
+    cat := Animal{"Pussy", 4}
+    dog := Animal{"Woofy", 4}
+    pig := Animal{"Pussy", 4}
+    cat == dog // false (different name, same number of legs)
+    cat == pig // true (same name, same number of legs)
+
+If a struct variable is only to be used once, it can be defined ad-hoc:
+
+    herbie := struct {
+        Brand  string
+        Wheels int
+    }{
+        "VW Beatle",
+        4,
+    }
+
+If consecutive members are of the same type, the type only has to be stated
+once:
+
+    type Creature struct {
+        Domain
+        Kingdom
+        Phylum
+        Class
+        Order
+        Family
+        Genus
+        Species string
+    }
+
+The `#` adverb to the `%v` verb outputs the member names and the values of a
+struct variable:
+
+    fmt.Printf("%#v\n", dilbert)
+
+### Structs and Pointers
+
+Struct variables can be initialized as pointers:
+
+    alice := &Person{
+        Name:    "Alice",
+        Age:     39,
+        Hobbies: []string{"Scolding"},
+    }
+    fmt.Println(*alice) // accessing the value
+
+Pointers can also be defined to members of a struct:
+
+    dilbertsAge := &dilbert.Age
+    fmt.Println(*dilbertsAge) // accessing the value
+
+### Embedded Structs
+
+Structs can consist of other structs:
+
+    type Point struct {
+        X int
+        Y int
+    }
+    type Circle struct {
+        Center Point
+        Radius int
+    }
+
+The embedded struct can be defined in a distinct step:
+
+    p := Point{13, 12}
+    c := Circle{p, 20}
+
+Or in a single step using nesting:
+
+    c := Circle{Point{13, 12}, 20}
+
+The struct's members can be accessed using a fully qualified path:
+
+    fmt.Println(c.Center.X, c.Center.Y, c.Radius)
+
+If a structs member is defined anonymously:
+
+    type Circle struct {
+        Point
+        Radius int
+    }
+
+The path to the nested members can be omitted:
+
+    fmt.Println(c.X, c.Y, c.Radius)
+
+The member names have to be unique in the latter case, it would not be possible
+to nest another struct anonymously with the member names X and Y.
