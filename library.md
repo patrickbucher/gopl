@@ -140,6 +140,78 @@ Example:
     func Sum512(data []byte) [Size]byte
         Sum512 returns the SHA512 checksum of the data.
 
+## `encoding`
+
+    Package encoding defines interfaces shared by other packages that convert
+    data to and from byte-level and textual representations. Packages that
+    check for these interfaces include encoding/gob, encoding/json, and
+    encoding/xml. As a result, implementing an interface once can make a type
+    useful in multiple encodings. Standard types that implement these
+    interfaces include time.Time and net.IP. The interfaces come in pairs that
+    produce and consume encoded data.
+
+### `encoding/json`
+
+    Package json implements encoding and decoding of JSON as defined in RFC
+    7159. The mapping between JSON and Go values is described in the
+    documentation for the Marshal and Unmarshal functions.
+
+#### `encoding/json.Decoder`
+
+    type Decoder struct { }
+        A Decoder reads and decodes JSON values from an input stream.
+
+##### `encoding/json.Decoder.Decode`
+
+    func (dec *Decoder) Decode(v interface{}) error
+        Decode reads the next JSON-encoded value from its input and stores it
+        in the value pointed to by v.
+
+#### `encoding/json.Encoder`
+
+    type Encoder struct { }
+        An Encoder writes JSON values to an output stream.
+
+##### `encoding/json.Encoder.Encode`
+
+    func (enc *Encoder) Encode(v interface{}) error
+        Encode writes the JSON encoding of v to the stream, followed by a
+        newline character.
+
+#### `encoding/json.NewDecoder`
+
+    func NewDecoder(r io.Reader) *Decoder
+        NewDecoder returns a new decoder that reads from r.
+
+#### `encoding/json.NewEncoder`
+
+    func NewEncoder(w io.Writer) *Encoder
+        NewEncoder returns a new encoder that writes to w.
+
+#### `encoding/json.Marshal`
+
+    func Marshal(v interface{}( ([]byte, error)
+        Marshal returns the JSON encoding of v.
+
+        Marshal traverses the value v recursively. If an encountered value
+        implements the Marshaler interface and is not a nil pointer, MArshal
+        calls its MarshalJSON method to produce JSON. [...]
+
+#### `encoding/json.MarshalIndent`
+
+    func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
+        MarshalIndent is like Marshal but applies Indent to format the output.
+        Each JSON element in the output will begin on a new line beginning with
+        prefix followed by one or more copies of indent according to the
+        indentation nesting.
+
+#### `encoding/json.Unmarshal`
+
+    func Unmarshal(data []byte, v interface{}) error
+        Unmarshal parses the JSON-encoded data and stores the result in the
+        value pointed to by v. If v is nil or not a pointer, Unmarshal returns
+        an InvalidUnmarshalError.
+
 ## `flag`
 
 ### `flag.Args`
@@ -821,6 +893,12 @@ Example:
         returned.
 
 ### `net/url`
+
+#### `net/url.QueryEscape`
+
+    func QueryEscape(s string) string
+        QueryEscape escapes the string so it can be safely placed inside a URL
+        query.
 
 #### `net/url.URL`
 
