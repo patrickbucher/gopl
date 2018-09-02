@@ -4,6 +4,7 @@
 
 Given this structure:
 
+```go
 type Employee struct {
 	EmployeeID int
 	Name       string
@@ -12,35 +13,38 @@ type Employee struct {
 	Salary     float32
 	Skills     []string
 }
+```
 
 And these entries:
 
-	boss := Employee{
-		EmployeeID: 1,
-		Name:       "Pointy Haired Boss",
-		Position:   "Manager",
-		Manager:    nil,
-		Salary:     250000,
-		Skills:     nil,
-	}
+```go
+boss := Employee{
+    EmployeeID: 1,
+    Name:       "Pointy Haired Boss",
+    Position:   "Manager",
+    Manager:    nil,
+    Salary:     250000,
+    Skills:     nil,
+}
 
-	dilbert := Employee{
-		EmployeeID: 42,
-		Name:       "Dilbert",
-		Position:   "Engineer",
-		Manager:    &boss,
-		Salary:     90000,
-		Skills:     []string{"Programming", "Mechanical Engineering"},
-	}
+dilbert := Employee{
+    EmployeeID: 42,
+    Name:       "Dilbert",
+    Position:   "Engineer",
+    Manager:    &boss,
+    Salary:     90000,
+    Skills:     []string{"Programming", "Mechanical Engineering"},
+}
 
-	wally := Employee{
-		EmployeeID: 18,
-		Name:       "Wally",
-		Position:   "Engineer",
-		Manager:    &boss,
-		Salary:     120000,
-		Skills:     []string{"Slacking Off", "Sleeping", "Avoiding Work"},
-	}
+wally := Employee{
+    EmployeeID: 18,
+    Name:       "Wally",
+    Position:   "Engineer",
+    Manager:    &boss,
+    Salary:     120000,
+    Skills:     []string{"Slacking Off", "Sleeping", "Avoiding Work"},
+}
+```
 
 The values can be encoded as JSON, XML, ASN.1 and others.
 
@@ -48,10 +52,12 @@ The values can be encoded as JSON, XML, ASN.1 and others.
 
 Output a struct variable as a JSON string:
 
-    data, err := json.Marshal(boss)
-    if err == nil {
-        fmt.Println(string(data))
-    }
+```go
+data, err := json.Marshal(boss)
+if err == nil {
+    fmt.Println(string(data))
+}
+```
 
 Output:
 
@@ -60,10 +66,12 @@ Output:
 
 Output using indentation for better human readability:
 
-    data, err := json.MarshalIndent(boss, "", "\t")
-    if err == nil {
-        fmt.Println(string(data))
-    }
+```go
+data, err := json.MarshalIndent(boss, "", "\t")
+if err == nil {
+    fmt.Println(string(data))
+}
+```
 
 Output:
 
@@ -78,14 +86,16 @@ Output:
 
 The JSON field names can be modified using field tags in the underlying struct:
 
-    type Employee struct {
-        EmployeeID int       `json:"id"`
-        Name       string    `json:"name"`
-        Position   string    `json:"position"`
-        Manager    *Employee `json:"boss"`
-        Salary     float32   `json:"wage"`
-        Skills     []string  `json:"knowledge"`
-    }
+```go
+type Employee struct {
+    EmployeeID int       `json:"id"`
+    Name       string    `json:"name"`
+    Position   string    `json:"position"`
+    Manager    *Employee `json:"boss"`
+    Salary     float32   `json:"wage"`
+    Skills     []string  `json:"knowledge"`
+}
+```
 
 Output (using the above marshaling code):
 
@@ -101,7 +111,9 @@ Output (using the above marshaling code):
 Fields with `nil` values can be suppressed for the output using the `omitempty`
 field tag:
 
-    Skills []string `json:"knowledge,omitempty"`
+```go
+Skills []string `json:"knowledge,omitempty"`
+```
 
 Output (using the above marshaling code):
 
@@ -116,25 +128,27 @@ Output (using the above marshaling code):
 
 A given JSON string can be unmarshaled into a struct variable:
 
-    asokStr := `{
-        "id": 101,
-        "name": "Asok",
-        "position": "intern",
-        "boss": {
-            "id": 1,
-            "name": "Pointy Haired Boss",
-            "position": "Manager",
-            "boss": null,
-            "wage": 250000,
-            "knowledge": null
-        },
-        "wage": 30000,
-        "knowledge": ["Learning by Doing", "Asking Questions"]
-    }`
-    data = []byte(asokStr)
-    var asok Employee
-    json.Unmarshal(data, &asok)
-    fmt.Printf("%#v\n", asok)
+```go
+asokStr := `{
+    "id": 101,
+    "name": "Asok",
+    "position": "intern",
+    "boss": {
+        "id": 1,
+        "name": "Pointy Haired Boss",
+        "position": "Manager",
+        "boss": null,
+        "wage": 250000,
+        "knowledge": null
+    },
+    "wage": 30000,
+    "knowledge": ["Learning by Doing", "Asking Questions"]
+}`
+data = []byte(asokStr)
+var asok Employee
+json.Unmarshal(data, &asok)
+fmt.Printf("%#v\n", asok)
+```
 
 Output:
 
