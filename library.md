@@ -1138,9 +1138,115 @@ Example:
         allowed for one goroutine to lock a Mutex and then arrange for another
         goroutine to unlock it.
 
+## `template`
+
+    Package template implements data-driven templates for generating textual
+    output.
+
+    To generate HTML output, see package html/template, which has the same
+    interface as this package but automatically secures HTML output against
+    certain attacks.
+
+    Templates are executed by applying them to a data structure. Annotations in
+    the template refer to elements of the data structure (typically a field of
+    a struct or a key in a map) to control execution and derive values to be
+    displayed. Execution of the template walks the structure and sets the
+    cursor, represented by a period '.' and called "dot", to the value at the
+    current location in the structure as execution proceeds.
+
+### `template.FuncMap`
+
+    type FuncMap map[string]interface{}
+        FuncMap is the type of the map defining the mapping from names to
+        functions. Each function must have eeither a single return value, or
+        two return values of which the second has type error. In that case, if
+        the second (error) return value evaluates to non-nil during execution,
+        execution terminates and Execute returns that error.
+
+### `template.HTML`
+
+    type HTML string
+        HTML encapsulates a known safe HTML document fragment. It should not be
+        used for HTML from a third-party, or HTML with unclosed tags or
+        comments. The outputs of a sound HTML sanitizer and a template escaped
+        by this package are fine for use with HTML.
+
+        Use of this type presents a security risk: the encapsulated content
+        should come from a trusted source, as it will be included verbatim in
+        the template output.
+
+### `template.Must`
+
+    func Must(t *Template, err error) *Template
+        Must is a helper that wraps a call to a function returning (*Template,
+        error) and panics if the error is non-nil. It is intended for use in
+        variable initializations such as
+
+        var t  = template.Must(template.New("name").Parse("text"))
+
+### `template.New`
+
+    func New(name string) *Template
+        New allocates a new, undefined template with the given name.
+
+### `template.Template`
+
+    type Template struct { }
+        Template is the representation of a parsed template. The *parse.Tree
+        field is exported only for use by html/template and should be treated
+        as unexported by all other clients.
+
+#### `template.Template.Execute`
+
+    func (t *Template) Execute(wr io.Writer, data interface{}) error
+        Execute applies a parsed template to the specified data object, and
+        writes the output to wr. If an error occurs executing the template or
+        writing its output, execution stops, but partial results may already
+        have been written to the output writer. A template may be executed
+        safely in parallel, although if parallel executions share a Writer the
+        output may be interleaved.
+
+        If data is a reflect.Value, the template applies to the concrete value
+        that the reflect.Value holds, as in fmt.Print.
+
+
+#### `template.Template.Funcs`
+
+    func (t *Template) Funcs(funcMap FuncMap) *Template
+        Funcs adds the elements of the argumentmap to the template's function
+        map. It must be called before the template is parsed. It panics if a
+        value in the map is not a function with appropriate return type or if
+        the name cannot be used syntactically as a function in a template. It
+        is legal to overwrite elements of the map. The return value is the
+        template, so calls can be chained.
+
+#### `template.Template.Parse`
+
+    func (t *Template) Parse(text string) (*Template, error)
+        Parse parses text as a template body for t. Named template definitions
+        ({{define ...}} or {{block ...}} statements) in text define additional
+        templates associated with t and are removed from the definition of t
+        itself.
+
+        Templates can be redefined in successive calls to Parse. A template
+        definition with a body containing only white space and comments is
+        considered empty and will not replace an existing template's body. This
+        allows using Parse to add new named template definitions without
+        overwriting the main template body.
+
 ## `time`
 
+    Package time provides functionality for measuring and displaying time.
+
+    The calendrical calculations always assume a Gregorian calendar, with no
+    leap seconds.
+
 ### `time.Duration`
+
+    type Duration int64
+        A Duration represents the elapsed time between two instants as an int64
+        nanosecond count. The representation limits the largest representable
+        duration to approximately 290 years.
 
 ### `time.Now`
 
