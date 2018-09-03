@@ -22,6 +22,12 @@ Compile a Go program:
 Organizes -- adds missing, removes unnecessary, orders in alphabetical order --
 imports in a package.
 
+## `go get`
+
+Get the package `golang.org/x/net/html`:
+
+    go get golang.org/x/net/html
+
 ## `go test`
 
 Run the tests of the current package:

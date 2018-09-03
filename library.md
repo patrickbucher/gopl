@@ -1349,3 +1349,30 @@ Example:
 
     func RuneCountInString(s string) (n int)
         RuneCountInString is like RuneCount but its input is a string.
+
+## `x/net/html`
+
+    Package html implements an HTML5-compliant tokenizer and parser.
+
+### `x/net/html.Node`
+
+    type Node struct {
+        Parent, FirstChild, LastChild, PrevSibling, NextSibling *Node
+        Type    NodeType
+        Data    string
+        Attr    []Attribute
+        // more
+    }
+        A Node consists of a NodeType and some Data (tag name for element
+        nodes, content for text) and are part of a tree of Nodes. Element nodes
+        may also have a Namespace and contain a slice of Attributes. Data is
+        unescaped, so that it looks like "a<b" rather than "a&lt;b". For
+        element nodes, DataAtom is the atom for Data, or zero if Data is not a
+        known tag name.
+
+### `x/net/html.Parse`
+
+    func Parse(r io.Reader) (*Node, error)
+        Parse returns the parse tree for the HTML from the given Reader. The
+        input is assumed to be UTF-8 encoded.
+
