@@ -267,7 +267,22 @@ Import multiple packages:
 
 ## Functions
 
-TODO
+A function can have a parameter list and a result list of 0..n elements:
+
+    func name(parameter-list) (result-list) {
+        body
+    }
+
+If multiple consecutive parameters and results share the same type, it can be
+"factored" out:
+
+    func name(a int, b int, c int) (x int, y int, z int) {
+    }
+
+Thus can be written shorter as:
+
+    func name(a, b, c int) (x, y, z int) {
+    }
 
 ### Function Literal
 
