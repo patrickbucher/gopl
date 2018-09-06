@@ -284,6 +284,38 @@ Thus can be written shorter as:
     func name(a, b, c int) (x, y, z int) {
     }
 
+### Multiple Return Values
+
+A function can return multiple values:
+
+    func integerDivision(a, b int) (int, int) {
+        return a / b, a % b
+    }
+
+The return values can also be named for better understanding:
+
+    func integerDivison(a, b int) (quotient, remainder int) {
+        // ...
+    }
+
+The named return values behave like variable declarations (with zero-value
+initialization), and thus can be assigned a value:
+
+    func integerDivison(a, b int) (quotient, remainder int) {
+        quotient = a / b
+        remainder = a % b
+        return quotient, remainder
+    }
+
+If the named return values should be returned and have a value assigned, a
+_bare return_ statement can be used:
+
+    func integerDivison(a, b int) (quotient, remainder int) {
+        quotient = a / b
+        remainder = a % b
+        return 
+    }
+
 ### Function Literal
 
 A function literal can stand wherever a function reference can. Thus this code:
