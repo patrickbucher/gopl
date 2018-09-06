@@ -262,6 +262,22 @@ Example:
 
 ## `fmt`
 
+### `fmt.Errorf`
+
+    func Errorf(format string, a ...interface{}) error
+        Errorf formats according to a format specifier and returns the string
+        as a value that satisfies error.
+
+### `fmt.Fprintf`
+
+    func Fprintf(w io.Writer, format string, a ...interface{} (n int, err error)
+        Fprintf formats according to a format specifier and writes to w. It
+        returns the number of bytes written and any write error encountered.
+
+Example:
+
+    fmt.Fprintf(os.Stderr, "%v (%T)\n", err, err)
+
 ### `fmt.Println`
 
     func Println(a ...interface{}) (n int, err error)
@@ -284,16 +300,6 @@ Example:
 Example
 
     fmt.Printf("%d / %d = %f", 10, 3, 10/3.0) // 10 / 3 = 3.333333
-
-### `fmt.Fprintf`
-
-    func Fprintf(w io.Writer, format string, a ...interface{} (n int, err error)
-        Fprintf formats according to a format specifier and writes to w. It
-        returns the number of bytes written and any write error encountered.
-
-Example:
-
-    fmt.Fprintf(os.Stderr, "%v (%T)\n", err, err)
 
 ### `fmt.Scanf`
 
