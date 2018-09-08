@@ -204,3 +204,62 @@ subsequent byte starts with `10`.
     11xxxxxx 10xxxxxx                       from   128 to     2047
     110xxxxx 10xxxxxx 10xxxxxx              from  2048 to    65535
     1110xxxx 10xxxxxx 10xxxxxx 10xxxxxx     from 65536 to 0x10ffff
+
+## Error Handling
+
+### Return Values
+
+In the parameter list of a function with multiple return values, an error
+should be the last item:
+
+    func foo(a, b int) (error, int) {} // bad
+    func foo(a, b int) (int, error) {} // bad
+
+If the function doesn't return an error, but indicates success with a boolean
+return value (like map lookup does), that variable is commonly called "ok" --
+both by the function and the caller:
+
+    func lookup(m map[string]string, k string) (value string, ok bool) { }
+    // ...
+    value, ok := lookup(m, "foobar")
+
+### Error Messages
+
+Error messages should be chained in all lowercase in order to provide the
+caller with a complete but concise breakdown of what went wrong:
+
+    if resp, err := http.Get(url); err != nil {
+        return fmt.Errorf("get %s: %v", url, err)
+    }
+
+Output:
+
+    $ go run httpget.go http://foobar.ch
+    get http://foobar.ch: Get http://foobar.ch: dial tcp: lookup foobar.ch: no such host
+
+### Error Handling Strategies
+
+1. Propagate the error -- with or without wrapping -- if there's nothing the
+   program can do to recover _on the level where the error occured_.
+    - Example: A function performs an HTTP GET request to a certain resource,
+      which fails. It's up to the caller to decide how to handle that outcome.
+2. Retry later -- consider exponential back-off -- if an external resource
+   could be temporarily unavailable.
+    - Example: A resource is sent to a server for processing. Due to the lack
+      of status indication, polling is the only way to find out whether or not
+      the result is ready.
+3. Exit the program, if further execution after the error is pointless.
+    - Example: A program to extract hyperlinks from a given URL cannot do
+      anything useful, if the initial request to the URL indicated fails.
+4. Log the error and ignore it; sometimes things are allowed to fail.
+    - Example: A web crawler might stumble upon dead hyperlinks. If those
+      cannot be accessed, it is useful to know (to avoid further tries), but
+      the program can continue.
+5. Ignore the error completely -- but document it!
+    - Example: A program stores files in the operating system's temp folder and
+      fails to delete those after its work is done. If that program runs on a
+      machine that is regularly restarted, the temp folder will be cleaned up
+      sooner or later anyway, so the error can be ignored. The omission should
+      be documented, however, because the program might be used in a different
+      setup, where temp folders aren't cleaned up on a regular basis.
+

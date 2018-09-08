@@ -12,6 +12,20 @@ Compile a Go program:
 
     go build helloworld.go
 
+## `go doc`
+
+Lookup the documentation for a package:
+
+    go doc http
+
+Lookup the documentation for a function within a package:
+
+    go doc http.Get
+
+Lookup a builtin symbol:
+
+    go doc builtin/error
+
 ## `go fmt` and `gofmt`
 
 - `go fmt` re-formats all the files in a package
