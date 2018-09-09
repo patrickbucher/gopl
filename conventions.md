@@ -144,7 +144,24 @@ struct variable:
 
 Output:
 
-struct { Name string; Age int }{Name:"Dilbert", Age:42}
+    struct { Name string; Age int }{Name:"Dilbert", Age:42}
+
+The `%*s` adverb can be used to right-pad a string. It requires two parameters:
+the amount of indentation and the string to be padded:
+
+    fmt.Printf("%*s", 0, "hello")
+    fmt.Printf("%*s", 5, "hello")
+    fmt.Printf("%*s", 8, "hello")
+
+Output:
+
+    hello
+    hello
+       hello
+
+The first two lines are identical, becaue the length of "hello" is 5, and the
+value is only visibly beeing right-padded when the indentation is bigger than
+the string's length.
 
 ## Escape Sequences
 

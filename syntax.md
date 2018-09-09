@@ -337,6 +337,44 @@ Such a function is called -- for its lack of a name -- a anonymous function.
 
 The `make` builtin function is used to build data structures, such as a `map`.
 
+### Function Values
+
+A function can be assigned to a variable and called using that variable:
+
+    f := math.Pow
+    z := f(2, 4) // math.Pow(2, 4) = 16
+
+The function's type is defined by its argument and result list:
+
+    f := math.Pow
+    fmt.Printf("%T") // func(float64, float64) float64
+
+A function variable can only be re-assigned to a matching type:
+
+    func add(a, b int) int {
+        return a + b
+    }
+
+    func div(a, b int) float64 {
+        return float64(a) / float64(b)
+    }
+
+    op := add // func(int, int) int
+    op = div // illegal: func(int, int) float64 is a different type!
+
+A functions zero value is nil:
+
+    var g func(int, int) int
+    fmt.Println(g) // <nil>
+
+Function values are not comparable, but can be testet for nil:
+
+    if g == nil {
+        // ok
+    } else if g == f {
+        // illegal
+    }
+
 ### Variadic Function
 
 The last function argument can be variadic:
