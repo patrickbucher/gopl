@@ -375,6 +375,31 @@ Function values are not comparable, but can be testet for nil:
         // illegal
     }
 
+### Closures
+
+A function with an enclosing scope is called a closure:
+
+    func fibonacci() func() int {
+        i, j := 0, 1
+        return func() int {
+            j, j = j, j+i
+            return i
+        }
+    }
+
+On every subsequent call of f(), the next Fibonacci number is calculated:
+
+    f := fibonacci()
+    f() // 1
+    f() // 1
+    f() // 2
+    f() // 3
+    f() // 5
+    f() // 8
+
+The function fibonacci() _closes over_ the anonymous function that calculates
+and returns the result.
+
 ### Variadic Function
 
 The last function argument can be variadic:
