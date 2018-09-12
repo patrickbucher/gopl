@@ -997,6 +997,13 @@ Example:
 
         scheme:opaque[?query][#fragment]
 
+#### `net/url.URL.Parse`
+
+    func (u *URL) Parse(ref string) (*URL, error)
+        Parse parses a URL in the context of the receiver. The provided URL may
+        be relative or absolute. Parse returns nil, err on parse failure,
+        otherwise its return value is the same as ResolveReference.
+
 ## `os`
 
 ### `os.Args`
