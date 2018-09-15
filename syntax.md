@@ -400,6 +400,58 @@ On every subsequent call of f(), the next Fibonacci number is calculated:
 The function fibonacci() _closes over_ the anonymous function that calculates
 and returns the result.
 
+#### Pitfall: Iteration Variables
+
+These items should be iterated over and be printed out _after_ the iteration:
+
+	items := []string{"foo", "bar", "qux"}
+
+For every item, a function literal is added to a list, enclosing the range of
+the loop body:
+
+	var funcs []func()
+	for _, item := range items {
+		funcs = append(funcs, func() {
+			fmt.Println(item)
+		})
+	}
+
+Then the collected functions are called after the loop:
+
+	for _, f := range funcs {
+		f()
+	}
+
+The output will not be as expected:
+
+    qux
+    qux
+    qux
+
+Only the item is printed, which was referred to by the `item` variable in the
+last iteration!
+
+Therefore, a copy of the iteration variable must be stored in the scope of the
+loop's body, so that the anonymous function can enclose it:
+
+	var funcs []func()
+	for _, item := range items {
+		localItem := item // local copy, could also be called "item"
+		funcs = append(funcs, func() {
+            // encloses localItem, not the iteration variable
+			fmt.Println(localItem)
+		})
+	}
+	for _, f := range funcs {
+		f()
+	}
+
+The output will now be correct:
+
+    foo
+    bar
+    qux
+
 ### Variadic Function
 
 The last function argument can be variadic:
