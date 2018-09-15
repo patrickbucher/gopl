@@ -454,11 +454,11 @@ The output will now be correct:
 
 ### Variadic Function
 
-The last function argument can be variadic:
+The last function argument can be variadic and is a slice of the type defined:
 
     func sum(s ...int) int {
         var sum int
-        for i := range s{
+        for i := range s {
             sum += s[i]
         }
         return sum
@@ -470,6 +470,16 @@ It can be called using zero to many parameters:
     sum(1)
     sum(1, 2)
     sum(1, 2, 3)
+
+An array can be passed by placing an ellipsis after it:
+
+    numbers := []int{1, 2, 3, 4}
+    sum(numbers...) // same as sum(1, 2, 3, 4)
+
+These function types are _not_ equivalent:
+
+    func f(...int) {}
+    func f([]int) {}
 
 ## Slices
 
