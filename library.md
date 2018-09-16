@@ -1086,6 +1086,13 @@ Example:
     Package path implements utility routines for manipulating slash-separated
     paths.
 
+## `path.base`
+
+    func Base(path string) string
+        Base returns the last element of path. trailing slashes are removed
+        before extracting the last element. If the path is empty, Base returns
+        ".". If the path consists entirely of slashes, Base returns "/".
+
 ### `path/filepath`
 
     Package filepath implements utility routines for manipulating filename

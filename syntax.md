@@ -1,7 +1,5 @@
 # Syntax
 
-## Assignment
-
 ## `for` Loop
 
 The C-style `for` loop without parentheses:
@@ -480,6 +478,38 @@ These function types are _not_ equivalent:
 
     func f(...int) {}
     func f([]int) {}
+
+### Deferred Function Calls
+
+The `defer` keyword will postpone the execution of a function to its end:
+
+    func main() {
+        defer fmt.Println(", World!")
+        fmt.Print("Hello")
+    }
+
+Output:
+
+    Hello, World!
+
+Deferred functions pile up on a stack, executing them in reverse order of
+`defer` calls:
+
+    func main() {
+        onExit := func(message string) {
+            fmt.Println(message)
+        }
+
+        defer onExit("nice")
+        defer onExit("was")
+        defer onExit("it")
+    }
+
+Output:
+
+    it
+    was
+    nice
 
 ## Slices
 
