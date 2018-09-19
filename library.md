@@ -90,6 +90,34 @@ Example:
 
     func Error() string
 
+### `builtin.panic`
+
+    func panic(v interface{})
+        The panic built-in function stops normal execution of the current
+        goroutine. When a function F calls panic, normal execution of F stops
+        immediately. Any functions whose execution was deferred by F are run in
+        the usual way, and then F returns to its caller. To the caller G, the
+        invocation of F then behaves like a call to panic, terminating G's
+        execution and running any deferred functions. This continues until all
+        functions in the executing goroutine have stopped, in reverse order. At
+        that point, the program is terminated and the error condition is
+        reported, including the value of the argument to panic. This
+        termination sequence is called panicking and can be controller by the
+        built-in function recover.
+
+### `builtin.recover`
+
+    func recover() interface{}
+        The recover built-in function allows a program to manage behaviour of a
+        panicking goroutine. Executing a call to recover inside a deferred
+        function (but not any function called by it) stops the panicking
+        sequence by restoring normal execution and retriebes the error value
+        passed to the call of panic. If recover is called outside the deferred
+        function it will not stop a panicking sequence. In this case, or when
+        the goroutine is not panicking, or if the argument supplied to panic
+        was nil, recover returns nil. Thus the return value from recover
+        reports whether the goroutine is panicking.
+
 ## `bytes`
 
     Package bytes implements functions for the manipulation of byte slices. It
@@ -1098,6 +1126,32 @@ Example:
     Package filepath implements utility routines for manipulating filename
     paths in a way compatible with the target operating system-defined file
     paths.
+
+## `regexp`
+
+    Package regexp implements regular expressions search.
+
+### `regexp.MustCompile`
+
+    func MustCompile(str string) *Regexp
+        MustCompile is like Compile but panics if the expression cannot be
+        parsed. It simplifies safe initialization of global variables holding
+        compiled regular expressions.
+
+## `runtime`
+
+    Package runtime contains operations that interact with Go's runtime system,
+    such as functions to control goroutines. It also includes the low-level
+    type information used by the reflect package; see reflect's documentation
+    for the programmable interface to the run-time type system.
+
+### `runtime.Stack`
+
+    func Stack(buf []byte, all bool) int
+        Stack formats a stack trace of the calling goroutine into buf and
+        returns the number of bytes written to buf. If all is true, Stack
+        formats stack traces of all other goroutines into buf after the trace
+        for the current goroutine.
 
 ## `sort`
 

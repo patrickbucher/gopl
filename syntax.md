@@ -1200,3 +1200,34 @@ The path to the nested members can be omitted:
 
 The member names have to be unique in the latter case, it would not be possible
 to nest another struct anonymously with the member names X and Y.
+
+## Panic and Recover
+
+If an error cannot be handled gracefully, a panic can be caused using the
+`panic` builtin function, leaving the current control flow. The program will be
+exited, unless a the program recovers from the panic using the builtin
+`recover` function.
+
+Causing a panic:
+
+    func divide(a, b float64) float64 {
+        if b == 0 {
+            panic("cannot divide by zero")
+        }
+        return a / b
+    }
+
+Deferred functions will be executed after its calling function panicked. A
+panickinig function can only be recovered from by invoking `recover` in a
+deferred function call:
+
+    func main() {
+        defer func() {
+            p := recover()
+            fmt.Println(p)
+        }()
+        fmt.Println(divide(10, 0))
+    }
+
+Just like errors, panics are values that can be compared, stored, and wrapped
+to be promoted by an additional `panic` call.
