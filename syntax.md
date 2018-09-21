@@ -1231,3 +1231,46 @@ deferred function call:
 
 Just like errors, panics are values that can be compared, stored, and wrapped
 to be promoted by an additional `panic` call.
+
+## Methods
+
+Given the structure `Point` and the function `Distance`:
+
+    type Point struct {
+        X int
+        Y int
+    }
+
+    func Distance(p, q Point) float64 {
+        x := p.X - q.X
+        y := p.Y - q.Y
+        return math.Sqrt(float64(x*x + y*y))
+    }
+
+The function `Distance` can be rewritten as a method attached to the type Point:
+
+    func (p Point) Distance(q Point) float64 {
+        x := p.X - q.X
+        y := p.Y - q.Y
+        return math.Sqrt(float64(x*x + y*y))
+    }
+
+Technically, the _receiver_ `p` is just a parameter to the function. Therefore,
+the implementation for a function and a method is the same, only the invocation
+differs:
+
+    func main() {
+        p := Point{5, 3}
+        q := Point{2, 1}
+        fmt.Println(Distance(p, q)) // function call
+        fmt.Println(p.Distance(q)) // method call
+    }
+
+Methods can be attache to any type defined in the same package. In order to add
+a method to a type like `string` or `int`, a type alias can be defined:
+
+    typedef Text string
+
+    func (t Text) NumberOfNewLines() int {
+        // ...
+    }
