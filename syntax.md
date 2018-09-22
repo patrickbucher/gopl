@@ -1274,3 +1274,22 @@ a method to a type like `string` or `int`, a type alias can be defined:
     func (t Text) NumberOfNewLines() int {
         // ...
     }
+
+Just like ordinary parameters, the _receiver_ can be passed in as a pointer,
+avoiding copying the argument value upon invocation:
+
+    func (p *Point) Distance(q *Point) float64 {
+        // ...
+    }
+
+The receiver can be a pointer, but the underlying type of the receiver must not
+be a pointer:
+
+    type Amount *float64 // pointer type
+    func (a Amount) format() string { } // illegal
+
+The usage of pointers or values should be consistent; either _all_ methods of a
+type use pointers, or _all_ methods of that type use values.
+
+`nil` pointers (but not `nil` itself, which is untyped) are valid receiver
+values, but must be dealt with and should be documented properly.
