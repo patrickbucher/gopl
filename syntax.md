@@ -1275,6 +1275,8 @@ a method to a type like `string` or `int`, a type alias can be defined:
         // ...
     }
 
+### Pointer Receivers
+
 Just like ordinary parameters, the _receiver_ can be passed in as a pointer,
 avoiding copying the argument value upon invocation:
 
@@ -1293,3 +1295,60 @@ type use pointers, or _all_ methods of that type use values.
 
 `nil` pointers (but not `nil` itself, which is untyped) are valid receiver
 values, but must be dealt with and should be documented properly.
+
+### Struct Embedding
+
+If the struct `ColoredPoint` embeds `Point` anonymously:
+
+    type Point struct { X, Y float64 }
+
+    func (p Point) Distance(q Point) float64 {
+        x := p.X - q.X
+        y := p.Y - q.Y
+        return math.Hypot(x, y)
+    }
+
+    type ColoredPoint struct {
+        Point // anonymous, struct embedding
+        Color color.RGBA
+    }
+
+The method `Distance` of `Point` is also appliable for `ColoredPoint`:
+
+    red := color.RGBA{255, 0, 0, 255}
+    blue := color.RGBA{0, 0, 255, 255}
+    var p = ColoredPoint{Point{1, 1, red}}
+    var q = ColoredPoint{Point{5, 4, blue}}
+
+    d := p.Distance(q.Point)
+    fmt.Println("distance =", d) // "distance = 5"
+
+Notice that the receiver `p` is a `ColoredPoint`, but that the parameter `q`
+must be a `Point`, not a `ColoredPoint`:
+
+    p.Distance(q) // compile error, q is not a Point
+
+### Method Values and Expressions
+
+Just like functions, methods can be stored as values for later calls (method
+values):
+
+    origin := Point{0, 0}
+    point := Point{3, 4}
+    fromOrigin := origin.Distance
+    fromOrigin(point) // 5
+
+A reference to a method not related to a receiver is called a method reference:
+
+    distance := Point.Distance
+
+Because the receiver is unknown, it must be supplied as the first argument upon
+invocation:
+
+    distance(origin, point) // 5
+
+If `Distance` were defined with the receiver `p *Point` instead of `p Point`,
+the syntax would be slightly different:
+
+    distance := (*Point).Distance
+    distance(&origin, point)
