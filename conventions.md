@@ -187,11 +187,27 @@ the string's length.
 
 Names starting with a capital letter are exported, others not:
 
-type Person struct {
-    Firstname   string  // exported
-    Lastname    string  // exported
-    identity    int     // not exported
-}
+    type Person struct {
+        Firstname   string  // exported
+        Lastname    string  // exported
+        identity    int     // not exported
+    }
+
+Exported names can be accessed from other packages, whereas only the declaring
+package can access unexported names.
+
+Instead of writing "getter" and "setter" methods for unexported fields, the
+`get` prefix is omitted in Go:
+
+    // "get" omitted
+    func (p *Person) Identity() {
+        return p.identity
+    }
+
+    // "set" retained
+    func (p *Person) SetIdentity(identity string) {
+        p.Identity = identity
+    }
 
 ### Camel Case
 

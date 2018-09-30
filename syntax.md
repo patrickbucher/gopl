@@ -1201,6 +1201,25 @@ The path to the nested members can be omitted:
 The member names have to be unique in the latter case, it would not be possible
 to nest another struct anonymously with the member names X and Y.
 
+### Encapsulation
+
+A struct member beginning with a capital letter is exported, i.e. visible to
+other packages.
+
+A struct member beginning with a lower-case letter is not exported, i.e. only
+visible inside the declaring package.
+
+Considering this example:
+
+    type Person struct {
+        id   string
+        Name string
+        Age  int
+    }
+
+The field `id` is only visible from within `Person`'s declaring package,
+whereas `Name` and `Age` are also visible from all other packages.
+
 ## Panic and Recover
 
 If an error cannot be handled gracefully, a panic can be caused using the
